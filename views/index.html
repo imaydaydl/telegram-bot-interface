@@ -1,0 +1,33 @@
+<!DOCTYPE html> 
+<html lang="ua" translate="no">
+<head>
+    <title><?php echo $this->title;?></title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+	<link href="/views/css/iziToast.min.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="/views/js/select2.min.js"></script>
+	<link href="/views/css/select2.min.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="/views/js/main.js"></script>
+	<link href="/views/css/main.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="/views/js/main.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+		<div id="main_wrapper">
+			<div class="content_header">
+				<div class="form-check form-switch">
+					<label class="form-check-label" for="toggleDarkTheme">Темна тема</label>
+					<input class="form-check-input" type="checkbox" role="switch" id="toggleDarkTheme">
+				</div>
+				<div class="content_header_right">
+					<span id="hello_text"></span>, <a href="<?php if($this->user_name != 'Користувач') echo '/profile'; else echo '/login'; ?>" title="Перейти до профілю"><?php echo $this->user_name;?></a>
+				</div>
+			</div>
+			<?php echo $this->content;?>
+		</div>
+	</div>
+</body>
+</html>

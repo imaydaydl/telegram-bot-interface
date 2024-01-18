@@ -1,0 +1,88 @@
+<div class="content_middle_settup">
+	<table class="settings">
+		<thead>
+			<tr>
+				<th>Етап</th>
+				<th class="w100">CHMOD</th>
+				<th class="w100">Статус</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Папка data/</td>
+				<td>{chmod_folder}</td>
+				<td>{status_folder}</td>
+			</tr>
+			<tr>
+				<td>Файл data/db.php</td>
+				<td class="chmod_db">{chmod_db}</td>
+				<td>{status_db}</td>
+			</tr>
+			<tr>
+				<td>Файл data/config.php</td>
+				<td class="chmod_config">{chmod_config}</td>
+				<td>{status_config}</td>
+			</tr>
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<td colspan="2">
+								<b>Дані для конфігурації (Файл data/config.php)</b>
+							<td>
+						</tr>
+						<tr>
+							<td class="server_mysql">Телеграм Bot token</td>
+							<td><input type="text" id="tg_token"></td>
+						</tr>
+						<tr>
+							<td>Посилання на Телеграм Bot</td>
+							<td><input type="text" id="tg_url"></td>
+						</tr>
+						<tr>
+							<td>Хеш</td>
+							<td><input class="hash_cr" type="text"><button class="random_hash">Рандом</button></td>
+						</tr>
+					</table>
+				</td>
+				<td colspan="2" class="text_center"><button class="create_config">Створити файл конфігурації</button></td>
+			</tr>
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<td colspan="2">
+								<b>Дані для доступу до сервера MySQL (Файл data/db.php)</b>
+							<td>
+						</tr>
+						<tr>
+							<td class="server_mysql">Сервер БД</td>
+							<td><input type="text" id="dbhost" value="localhost"></td>
+						</tr>
+						<tr>
+							<td>Назва БД</td>
+							<td><input type="text" id="dbname"></td>
+						</tr>
+						<tr>
+							<td>Користувач БД</td>
+							<td><input type="text" id="dbuser"></td>
+						</tr>
+						<tr>
+							<td>Пароль користувача БД</td>
+							<td><input type="text" id="dbpasswd"></td>
+						</tr>
+						<tr>
+							<td>Користувач (адмін)</td>
+							<td><input type="text" id="user"></td>
+						</tr>
+						<tr>
+							<td>Пароль користувача</td>
+							<td><input type="text" id="passwd"></td>
+						</tr>
+					</table>
+				</td>
+				<td colspan="2" class="text_center"><button class="create_db">Створити файл БД</button></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

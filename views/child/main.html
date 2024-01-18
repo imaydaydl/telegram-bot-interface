@@ -1,0 +1,64 @@
+<div class="content_top_menu">
+    [send_message]<div id="send_message" class="active">Повідомлення</div>[/send_message]
+    [history]<div id="history">Історія повідомлень</div>[/history]
+    [log]<div id="log">Лог бота</div>[/log]
+    [user_list]<div id="user_list">Користувачі</div>[/user_list]
+    [settings]<div id="settings">Налаштування</div>[/settings]
+</div>
+<div class="content_middle_settup">
+    <div id="send_message_block" class="active_block">
+        {tg_sends}
+    </div>
+    <div id="history_block">
+        <table class="history">
+            <thead>
+                <tr>
+                    <th class="w100">Хто відправив</th>
+                    <th>Текст</th>
+                    <th class="w100">Кому</th>
+                    <th class="w100">Дата</th>
+                    <th class="w100">Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {history_tab}
+            </tbody>
+        </table>
+    </div>
+    <div id="log_block">
+        <table class="history">
+            <thead>
+                <tr>
+                    <th class="w100">Користувач</th>
+                    <th>Дія</th>
+                    <th class="w100">chat_id</th>
+                    <th class="w100">Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {log_tab}
+            </tbody>
+        </table>
+    </div>
+    <div id="user_list_block">
+        [add_users]<div class="text_right margin-b"><button class="btn btn-primary addUser">Додати користувача</button></div>[/add_users]
+        <table class="history">
+            <thead>
+                <tr>
+                    <th class="w100">Ім'я</th>
+                    <th class="w100">Прізвище</th>
+                    <th class="w100">Логін</th>
+                    <th class="w100">Дата реєстрації</th>
+                    <th>Доступи</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                {users_tab}
+            </tbody>
+        </table>
+    </div>
+    <div id="settings_block">
+        {setting_block}
+    </div>
+</div>
