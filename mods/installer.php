@@ -155,7 +155,7 @@ class Installer {
 
             $fillDb = $this->fillDb();
 
-            if($fillDb['status'] == 'error') {
+            if(isset($fillDb['status']) && $fillDb['status'] == 'error') {
                 return json_encode($fillDb);
             } else {
                 return json_encode(['status' => 'success', 'file_status' => is_writable($this->fileDb), 'chmod' => @decoct(@fileperms($this->fileDb)) % 1000]);
