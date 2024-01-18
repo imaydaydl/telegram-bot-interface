@@ -536,14 +536,61 @@ $(document).ready(function(){
                 let name = $('body').find('#edit_name').val();
                 let second = $('body').find('#edit_second').val();
                 let login = $('body').find('edit_login').val();
+
+                let json = {};
+                json.user_id = user_id;
+                json.old_pass = old_pass;
+                json.password = new_pass;
+                json.name = name;
+                json.second = second;
+                json.login = login;
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/user/saveProfile',
+                    data: json,
+                    dataType: 'json',
+                    success: function(response) {
+                        if(response.status == 'error') {
+                            toast('error', 'Помилка!', 'Сталась помилка. ' + response.message);
+                        } else {
+                            toast('success', 'Успішно!', 'Дані успішно оновлено');
+                        }
+                    }
+                });
             }
         }
+    });
+    $('.logout').on('click', function() {
+        $.ajax({
+            type: 'POST',
+            url: '/user/logout',
+            dataType: 'json',
+            success: function(response) {
+                window.location = '/';
+            }
+        });
     });
     $('body').on('click', '.addBotButton', function() {
         $(this).attr('disabled', true);
         console.log(1);
         let block = $(this).closest('div.fields_right');
         $(this).before('<input type="text" class="button_name" placeholder="Кніпка">');
+    });
+    $('body').on('click', '.connect_webhooks', function() {
+        $.ajax({
+            type: 'POST',
+            url: '/install/creat_connect',
+            dataType: 'json',
+            success: function(response) {
+                if(response.status == 'error') {
+                    toast('error', 'Помилка!', 'Сталась помилка. ' + response.message);
+                } else {
+                    let win = window.open(response.url, '_blank');
+                    win.focus();
+                }
+            }
+        });
     });
 });
 

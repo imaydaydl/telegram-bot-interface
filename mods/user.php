@@ -81,6 +81,12 @@ class UserMod {
             case 'profile':
                 $this->profile();
                 break;
+            case 'saveProfile':
+                $this->saveProfile();
+                break;
+            case 'logout':
+                $this->clearSession();
+                break;
         }
     }
 
@@ -260,6 +266,30 @@ class UserMod {
         $this->view->title = 'Профіль';
 
         $this->view->render('index.html');
+    }
+
+    private function saveProfile() {
+        $old_pass = $this->post['old_pass'] ?? '';
+        $user_id = $this->post['user_id'];
+
+        if($old_pass == '') {
+            echo json_encode(['status' => 'error', 'message' => 'Старий пароль не може бути пустим']);
+        } else {
+            $mdold_pass = md5($old_pass . $this->config['hash']);
+            $check = $this->db->superQuery("SELECT password FROM users WHERE id = '{$user_id}'");
+            if($mdold_pass != $check['password']) {
+                echo json_encode(['status' => 'error', 'message' => 'Старий пароль не правильний']);
+            } else {
+                $check2 = $this->db->superQuery("SELECT id FROM users WHERE login = '{$this->post['login']}'");
+                if($check2 && $check2['id'] != $user_id) {
+                    echo json_encode(['status' => 'error', 'message' => 'Такий логін вже існує']);
+                } else {
+                    $mdpassword = md5($this->post['password'] . $this->config['hash']);
+                    $this->db->query("UPDATE users SET `name` = '{$this->post['name']}', `second_name` = '{$this->post['second']}', `password` = '{$mdpassword}', `login` = '{$this->post['login']}' WHERE id = '{$user_id}'");
+                    echo json_encode(['status' => 'success']);
+                }
+            }
+        }
     }
 
     public function getUser($user_id) {

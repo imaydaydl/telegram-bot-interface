@@ -33,6 +33,9 @@ class Installer {
             case 'create_config':
                 return $this->createConfig();
                 break;
+            case 'creat_connect':
+                $this->creatConnect();
+                break;
         }
     }
 
@@ -111,6 +114,25 @@ class Installer {
         $this->view->render('index.html');
     }
 
+    private function creatConnect() {
+        global $config;
+
+        if(!file_exists(ROOT_DIR . '/data/config.php')) {
+            echo json_encode(['status' => 'error', 'message' => 'Спочатку встановіть файл конфігурації']);
+            die();
+        }
+
+        if(file_exists(ROOT_DIR . '/data/config.php')) {
+            if(!isset($config['bot_token']) || $config['bot_token'] == '') {
+                echo json_encode(['status' => 'error', 'message' => 'Спочатку вкажіть токен бота']);
+                die();
+            } else {
+                $url = "https://api.telegram.org/bot" . $config['bot_token'] . "/setWebHook?url=https://" . $_SERVER['HTTP_HOST'] . "/bot/webhook";
+                echo json_encode(['status' => 'success', 'url' => $url]);
+            }
+        }
+    }
+
     private function createDb() {
         if(!file_exists(ROOT_DIR . '/data/config.php')) {
             return json_encode(['status' => 'error', 'message' => 'Спочатку створіть файл конфігурації']);
@@ -153,9 +175,9 @@ class Installer {
             fclose($con_file);
             @chmod($this->fileDb, 0666);
 
-            $fillDb = $this->fillDb();
+            $fillDb = $this->fillDb() ?? null;
 
-            if(isset($fillDb['status']) && $fillDb['status'] == 'error') {
+            if($fillDb && isset($fillDb['status']) && $fillDb['status'] == 'error') {
                 return json_encode($fillDb);
             } else {
                 return json_encode(['status' => 'success', 'file_status' => is_writable($this->fileDb), 'chmod' => @decoct(@fileperms($this->fileDb)) % 1000]);
@@ -195,6 +217,8 @@ class Installer {
 
     private function fillDb() {
         global $config;
+
+        if(!file_exists(ROOT_DIR . '/data/db.php')) return;
 
         require_once ROOT_DIR . '/data/db.php';
 
