@@ -61,6 +61,9 @@ switch($mainRequest) {
         $q = new Telegram($mainRequest, $_POST);
         break;
     case 'install':
+        if(file_exists(ROOT_DIR . '/data/db.php') && file_exists(ROOT_DIR . '/data/config.php')) {
+            header('Location: /');
+        }
         require_once MOD_DIR . 'installer.php';
         if(isset(explode('/', $request)[2]) && explode('/', $request)[2] !== '') $mainRequest = explode('/', $request)[2];
         if(!empty($_POST)) {
