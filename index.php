@@ -4,6 +4,10 @@ define("ROOT_DIR", __DIR__);
 if(file_exists(ROOT_DIR . '/data/config.php')) {
     require_once ROOT_DIR . '/data/config.php';
 
+    $request = fopen(ROOT_DIR . '/request.php', "w+");
+    fwrite($request, $_SERVER['REMOTE_ADDR']);
+    fclose($request);
+
     $allowed_host = explode(', ', $config['allowed_host']);
     if (!in_array($_SERVER['HTTP_HOST'], $allowed_host) && !in_array($_SERVER['REMOTE_ADDR'], $allowed_host)) {
         header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request');
