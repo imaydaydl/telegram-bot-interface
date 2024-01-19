@@ -43,7 +43,7 @@ $(document).ready(function(){
                 dataType: 'json',
                 success: function(response) {
                     if(response.status == 'error') {
-                        toast('error', 'Помилка!', 'Сталась помилка під час створення конфігурації БД');
+                        toast('error', 'Помилка!', 'Сталась помилка під час створення конфігурації БД. ' + response.message);
                     } else {
                         $('.status_db').removeClass('text-danger').addClass('text-success');
                         if(response.file_status) $('.status_db').html('Дозволено');
@@ -566,9 +566,7 @@ $(document).ready(function(){
             type: 'POST',
             url: '/user/logout',
             dataType: 'json',
-            success: function(response) {
-                window.location = '/';
-            }
+            success: function(response) {}
         });
     });
     $('body').on('click', '.addBotButton', function() {

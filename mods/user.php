@@ -306,6 +306,9 @@ class UserMod {
 
     public function clearSession() {
         $this->user->clearSession();
+        if($_SERVER['REQUEST_URI'] != '/login') {
+            header('Location: /login');
+        }
     }
 
     public function getRules() {

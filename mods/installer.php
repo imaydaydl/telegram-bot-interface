@@ -137,7 +137,6 @@ class Installer {
         if(!file_exists(ROOT_DIR . '/data/config.php')) {
             return json_encode(['status' => 'error', 'message' => 'Спочатку створіть файл конфігурації']);
         } else {
-
             include_once ROOT_DIR . '/classes/mysql.class.php';
 
             $dbhost = $this->post['host'];
@@ -148,7 +147,7 @@ class Installer {
             $check_db = new db;
             define ("COLLATE", "utf8mb4");
             if ( !$check_db->connect($dbuser, $dbpasswd, $dbname, $dbhost, false) ) {
-                return json_encode(["status" => "error", "message" => "Помилка! Неможливо підключитись до БД із вказаними даними."]);
+                return json_encode(["status" => "error", "message" => "Неможливо підключитись до БД із вказаними даними."]);
             }
 
             $db = <<<HTML
