@@ -29,7 +29,7 @@ if(file_exists(ROOT_DIR . '/data/db.php')) {
         }
     }
 
-    if((!isset($_SESSION['user_id']) || (isset($_SESSION['user_id']) && $_SESSION['date'] < date('Y-m-d'))) && !in_array($mainRequest, ['install', 'getMainData', 'login'])) {
+    if((!isset($_SESSION['user_id']) || (isset($_SESSION['user_id']) && $_SESSION['date'] < date('Y-m-d'))) && !in_array($mainRequest, ['install', 'getMainData', 'login', 'bot'])) {
         $userM->clearSession();
         header('Location: /login');
     }
