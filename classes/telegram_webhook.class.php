@@ -36,6 +36,7 @@ class TelegramWebhook {
 
             switch($text) {
                 default:
+                    break;
                 case '/start':
                     $reply = "Menu: ";
                     $reply_markup = $this->telegram->replyKeyboardMarkup([ 'keyboard' => $this->menu['menu'], 'resize_keyboard' => true, 'one_time_keyboard' => false ]);
