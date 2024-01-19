@@ -82,7 +82,9 @@ class Telegram {
         $old_id = trim($result['old_id']);
         $time = time();
 
-        $this->db->query("INSERT INTO telegram_log (username, chat_id, name, action, added) VALUES ('{$username}', '{$chat_id}', '{$name}', '{$result['text']}', '{$time}')");
+        if($chat_id && $name && $result['text']) {
+            $this->db->query("INSERT INTO telegram_log (username, chat_id, name, action, added) VALUES ('{$username}', '{$chat_id}', '{$name}', '{$result['text']}', '{$time}')");
+        }
 
         if($chat_id == $old_id) return false;
 
