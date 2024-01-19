@@ -576,16 +576,52 @@ $(document).ready(function(){
         $(this).before('<input type="text" class="button_name" placeholder="Кніпка">');
     });
     $('body').on('click', '.connect_webhooks', function() {
+        let url = '';
+        if(window.location.pathname == '/install') {
+            url = '/install/creat_connect';
+        } else {
+            url = '/settings/creat_connect';
+        }
+
         $.ajax({
             type: 'POST',
-            url: '/install/creat_connect',
+            url: url,
             dataType: 'json',
             success: function(response) {
                 if(response.status == 'error') {
                     toast('error', 'Помилка!', 'Сталась помилка. ' + response.message);
                 } else {
-                    let win = window.open(response.url, '_blank');
-                    win.focus();
+                    $.ajax({
+                        type: 'GET',
+                        url: response.url,
+                        success: function(response) {
+                            if(response.ok == false) {
+                                toast('error', 'Помилка!', response.description);
+                            } else {
+                                toast('success', 'Успішно!', response.description);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+    $('.saveSettings').on('click', function() {
+        let json = {};
+        json.bot_token = $('#tg_token').val();
+        json.bot_url = $('#tg_url').val();
+        json.chat_id = $('#chat_id').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/settings/saveSettings',
+            data: json,
+            dataType: 'json',
+            success: function(response) {
+                if(response.status == 'error') {
+                    toast('error', 'Помилка!', 'Сталась помилка. ' + response.message);
+                } else {
+                    toast('success', 'Успішно!', 'Нові налаштування успішно збережено');
                 }
             }
         });

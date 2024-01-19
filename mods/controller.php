@@ -53,7 +53,7 @@ switch($mainRequest) {
     case 'settings':
         if(isset(explode('/', $request)[2]) && explode('/', $request)[2] !== '') $mainRequest = explode('/', $request)[2];
         require_once MOD_DIR . 'home.php';
-        $q = new Home($mainRequest);
+        $q = new Home($mainRequest, $_POST);
         break;
     case 'bot':
         if(isset(explode('/', $request)[2]) && explode('/', $request)[2] !== '') $mainRequest = explode('/', $request)[2];

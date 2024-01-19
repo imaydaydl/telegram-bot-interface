@@ -6,9 +6,10 @@ class Home {
     protected $db;
     protected $config;
     protected $user;
+    private $post;
     protected $rules = ['send_message', 'history', 'log', 'user_list', 'settings', 'add_users', 'edit_users', 'block_users'];
 
-    public function __construct($query) {
+    public function __construct($query, $post = array()) {
         global $db, $config, $view, $user;
 
         $this->query = $query;
@@ -16,6 +17,7 @@ class Home {
         $this->db = $db;
         $this->config = $config;
         $this->user = $user;
+        $this->post = $post;
     }
 
     public function run() {
@@ -35,6 +37,12 @@ class Home {
                 break;
             case 'settings':
                 $this->getSettings();
+                break;
+            case 'creat_connect':
+                $this->creatConnect();
+                break;
+            case 'saveSettings':
+                $this->saveSettings();
                 break;
         }
     }
@@ -270,7 +278,8 @@ class Home {
             $view2->templ('child/settings.html');
             $view2->buttons = $view2->result['buttons'];
             $view2->bot_token = $this->config['bot_token'];
-            $view2->tg_url = $this->config['tg_url'];
+            $view2->tg_url = $this->config['bot_url'];
+            $view2->chat_id = $this->config['chat_id'];
             $view2->compile('settings');
         }
 
@@ -291,5 +300,56 @@ class Home {
         $this->view->user_name = $this->user['login'];
 
         $this->view->render('index.html');
+    }
+
+    private function creatConnect() {
+        global $config;
+
+        if(!file_exists(ROOT_DIR . '/data/config.php')) {
+            echo json_encode(['status' => 'error', 'message' => 'Спочатку встановіть файл конфігурації']);
+            die();
+        }
+
+        if(file_exists(ROOT_DIR . '/data/config.php')) {
+            if(!isset($config['bot_token']) || $config['bot_token'] == '') {
+                echo json_encode(['status' => 'error', 'message' => 'Спочатку вкажіть токен бота']);
+                die();
+            } else {
+                $url = "https://api.telegram.org/bot" . $config['bot_token'] . "/setWebHook?url=https://" . $_SERVER['HTTP_HOST'] . "/bot/webhook";
+                echo json_encode(['status' => 'success', 'url' => $url]);
+            }
+        }
+    }
+
+    private function saveSettings() {
+        try {
+            $config = <<<HTML
+            <?php
+
+            \$config = array(
+
+            'allowed_host' => {$this->config['allowed_host']},
+
+            'hash' => '{$this->config['hash']}',
+
+            'bot_token' => '{$this->post['tg_bot']}',
+
+            'bot_url' => '{$this->post['tg_url']}',
+
+            'chat_id' => '{$this->post['chat_id']}'
+
+            );
+
+            HTML;
+
+            $con_file = fopen(ROOT_DIR . '/data/config.php', "w+") or die("Неможливо створити файл <b>.data/config.php</b>.<br />Перевірте правильність CHMOD!");
+            fwrite($con_file, $config);
+            fclose($con_file);
+            @chmod(ROOT_DIR . '/data/config.php', 0666);
+
+            return json_encode(['status' => 'success']);
+        } catch(Exception $e) {
+            return json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
 }
