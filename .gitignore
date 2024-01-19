@@ -1,4 +1,5 @@
 vendor/
 data/config.php
 data/db.php
+data/bot_menu.php
 composer.lock

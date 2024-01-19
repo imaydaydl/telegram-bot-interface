@@ -36,7 +36,11 @@ class TelegramWebhook {
             $old_id = $get_user['chat_id'];
             $username = $first_name . ' ' . $last_name;
 
-            $check = $this->db->superQuery("SELECT id FROM telegram_users WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'");
+            if($chat_id && $text && $name) {
+                $check = $this->db->superQuery("SELECT id FROM telegram_users WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'");
+            } else {
+                $check = true;
+            }
 
             if(!$check || $check['id']) {
                 switch($text) {
