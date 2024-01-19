@@ -37,7 +37,7 @@ class TelegramWebhook {
             $username = $first_name . ' ' . $last_name;
 
             $log = fopen(ROOT_DIR . '/data/tglog.php', "w+");
-            fwrite($log, $result["message"]);
+            fwrite($log, $result);
             fclose($log);
 
             if($chat_id && $text && $name) {
