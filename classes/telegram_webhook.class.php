@@ -78,7 +78,7 @@ class TelegramWebhook {
 
             return ['username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text];
         } catch(Exception $e) {
-            $log = fopen(ROOT_DIR . '/log.php', "w+");
+            $log = fopen(ROOT_DIR . '/data/log.php', "w+");
             fwrite($log, $e);
             fclose($log);
             return json_encode(['status' => 'error', 'message' => $e->getMessage()]);
