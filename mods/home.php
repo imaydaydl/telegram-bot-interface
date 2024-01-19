@@ -143,7 +143,7 @@ class Home {
                 $view2->templ('tabs/log.html');
                 foreach($logs as $log) {
                     $username = $log['username'] ? $log['username'] : '';
-                    $name = $username != '' ? $username . '(' . $log['name'] . ')' : $log['name'];
+                    $name = $username != '' ? $username . ' (' . $log['name'] . ')' : $log['name'];
                     $view2->name = $name;
                     $view2->action = 'Натиснув кнопку ' . $log['action'];
                     $view2->target = $log['chat_id'];
