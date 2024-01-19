@@ -191,7 +191,7 @@ class Installer {
 
             \$config = array(
 
-            'allowed_host' => '{$_SERVER['HTTP_HOST']}, https://api.telegram.org/, https://telegram.org/',
+            'allowed_host' => '{$_SERVER['HTTP_HOST']}, https://api.telegram.org/, https://telegram.org/, 172.71.99.48',
 
             'hash' => '{$this->post['hash']}',
 
