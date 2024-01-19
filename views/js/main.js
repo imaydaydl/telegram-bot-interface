@@ -600,7 +600,12 @@ $(document).ready(function(){
                             } else {
                                 toast('success', 'Успішно!', response.description);
                             }
-                        }
+                        },
+                        complete: function(xhr, textStatus) {
+                            if(xhr.status == 400) {
+                                toast('error', 'Помилка!', 'Неправильний запит ' + response.url);
+                            }
+                        } 
                     });
                 }
             }
