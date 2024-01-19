@@ -36,6 +36,10 @@ class TelegramWebhook {
             $old_id = $get_user['chat_id'];
             $username = $first_name . ' ' . $last_name;
 
+            $log = fopen(ROOT_DIR . '/data/tglog.php', "w+");
+            fwrite($log, $result["message"]);
+            fclose($log);
+
             if($chat_id && $text && $name) {
                 $check = $this->db->superQuery("SELECT id FROM telegram_users WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'");
             } else {
