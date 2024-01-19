@@ -164,10 +164,13 @@ table.settings table input {
 table.settings button {
     background-color: transparent;
     text-decoration: none;
-    color: #ABABAB;
+    color: #000;
     border: 1px solid #6F6F6F;
     border-radius: 3px;
     padding: 6px 10px;
+}
+.dark_theme table.settings button {
+    color: #ABABAB;
 }
 table.settings button:hover {
 	color:#fff;
