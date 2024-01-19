@@ -6,7 +6,7 @@ if(file_exists(ROOT_DIR . '/data/config.php')) {
 
     $f_request = file_get_contents(ROOT_DIR . '/data/request.php');
     $request = fopen(ROOT_DIR . '/data/request.php', "w+");
-    fwrite($request, $f_request . "\n" . $_SERVER['HTTP_X_FORWARDED_HOST']);
+    fwrite($request, $f_request . "\n" . $_SERVER['REMOTE_HOST']);
     fclose($request);
 
     $allowed_host = explode(', ', $config['allowed_host']);
