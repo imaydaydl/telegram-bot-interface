@@ -577,7 +577,7 @@ $(document).ready(function(){
     });
     $('body').on('click', '.connect_webhooks', function() {
         let url = '';
-        console.log(window.location.pathname);
+        console.log(window.location);
         if(window.location.pathname == '/install') {
             url = '/install/creat_connect';
         } else {
