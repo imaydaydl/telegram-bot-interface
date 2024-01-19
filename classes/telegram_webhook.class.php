@@ -9,10 +9,12 @@ class TelegramWebhook {
     protected $telegram;
     protected $config;
     protected $menu;
+    protected $db;
 
     public function __construct() {
-        global $config, $menu, $menu2;
+        global $config, $menu, $menu2, $db;
 
+        $this->db = $db;
         $this->config = $config;
         $this->telegram = new Api($config['bot_token']);
         $this->menu = [
