@@ -62,10 +62,10 @@ class Telegram {
                 return true;
             }
         } else {
-            $tg->setChatId(-4176967986);
+            $tg->setChatId($this->config['chat_id']);
             $send = $tg->sendMessage($this->post['message']);
 
-            $this->writeMessageLog(-4176967986, $send);
+            $this->writeMessageLog($this->config['chat_id'], $send);
 
             return true;
         }
