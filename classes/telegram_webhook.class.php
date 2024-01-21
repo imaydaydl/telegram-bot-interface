@@ -41,12 +41,12 @@ class TelegramWebhook {
             fclose($log);
 
             if($chat_id && $text && $name) {
-                $check = $this->db->superQuery("SELECT id FROM telegram_users WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'");
+                $check = $this->db->superQuery("SELECT id FROM telegram_users WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
             } else {
                 $check = true;
             }
 
-            if(!$check || $check['id']) {
+            if(!$check || !isset($check['id'])) {
                 switch($text) {
                     default:
                         break;
@@ -90,7 +90,7 @@ class TelegramWebhook {
                         break;
                 }
 
-                return ['username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text];
+                return ['status' => 'success', 'username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text];
             }
         } catch(Exception $e) {
             $log = fopen(ROOT_DIR . '/data/log.php', "w+");

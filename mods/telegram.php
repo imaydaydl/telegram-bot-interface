@@ -76,21 +76,23 @@ class Telegram {
         $tg = new TelegramWebhook();
         $result = $tg->run();
 
-        $username = trim($result['username']);
-        $chat_id = trim($result['chat_id']);
-        $name = trim($result['name']);
-        $old_id = trim($result['old_id']);
-        $time = time();
+        if($result['status'] == 'success') {
+            $username = trim($result['username']);
+            $chat_id = trim($result['chat_id']);
+            $name = trim($result['name']);
+            $old_id = trim($result['old_id']);
+            $time = time();
 
-        if($chat_id && $name && $result['text']) {
-            $this->db->query("INSERT INTO telegram_log (username, chat_id, name, action, added) VALUES ('{$username}', '{$chat_id}', '{$name}', '{$result['text']}', '{$time}')");
+            if($chat_id && $name && $result['text']) {
+                $this->db->query("INSERT INTO telegram_log (username, chat_id, name, action, added) VALUES ('{$username}', '{$chat_id}', '{$name}', '{$result['text']}', '{$time}')");
+            }
+
+            if($chat_id != $old_id) {
+                $this->db->query("INSERT INTO telegram_users (username, chat_id, name, added) VALUES ('{$username}', '{$chat_id}', '{$name}', '{$time}')");
+            }
+
+	        return true;
         }
-
-        if($chat_id == $old_id) return false;
-
-        $this->db->query("INSERT INTO telegram_users (username, chat_id, name, added) VALUES ('{$username}', '{$chat_id}', '{$name}', '{$time}')");
-
-	    return true;
     }
 
     private function writeMessageLog($chat_id, $status) {
