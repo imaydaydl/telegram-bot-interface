@@ -79,7 +79,7 @@ class TelegramWebhook {
                         $reply = "Inline keyboard";
                         $inline[] = ['text'=>'Test', 'url'=> $_SERVER['HTTP_HOST']];
                         $inline[] = ['text'=>'Test Chat', 'url' => $this->config['bot_url']];
-                        $inline[] = ['text'=>'Test 2', 'url' => '/register'];
+                        $inline[] = ['text'=>'Test 2', 'callback_data' => '/register'];
                         $inline = array_chunk($inline, 2);
                         $reply_markup = ['inline_keyboard'=>$inline];
                         $inline_keyboard = json_encode($reply_markup);
