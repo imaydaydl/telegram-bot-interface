@@ -73,6 +73,10 @@ class Telegram {
     }
 
     private function webhook() {
+        $con_file = fopen(ROOT_DIR . '/data/request.php', "w+");
+        fwrite($con_file, json_encode($_POST));
+        fclose($con_file);
+
         $tg = new TelegramWebhook();
         $result = $tg->run();
 
