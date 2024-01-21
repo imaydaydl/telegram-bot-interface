@@ -46,6 +46,10 @@ class TelegramWebhook {
                 $check = true;
             }
 
+            $log = fopen(ROOT_DIR . '/data/checker.php', "w+");
+            fwrite($log, json_encode(['status' => 'success', 'username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text, 'check' => $check]));
+            fclose($log);
+
             if(!$check || !isset($check['id'])) {
                 $log = fopen(ROOT_DIR . '/data/result_first.php', "w+");
                 fwrite($log, json_encode(['status' => 'success', 'username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text]));
