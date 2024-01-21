@@ -47,6 +47,10 @@ class TelegramWebhook {
             }
 
             if(!$check || !isset($check['id'])) {
+                $log = fopen(ROOT_DIR . '/data/result_first.php', "w+");
+                fwrite($log, json_encode(['status' => 'success', 'username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text]));
+                fclose($log);
+
                 switch($text) {
                     default:
                         break;
@@ -89,6 +93,10 @@ class TelegramWebhook {
                         $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $inline_keyboard]);
                         break;
                 }
+
+                $log = fopen(ROOT_DIR . '/data/result.php', "w+");
+                fwrite($log, json_encode(['status' => 'success', 'username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text]));
+                fclose($log);
 
                 return ['status' => 'success', 'username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text];
             }
