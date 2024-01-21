@@ -41,7 +41,7 @@ class TelegramWebhook {
             fclose($log);
 
             if($chat_id && $text && $name) {
-                $check = $this->db->superQuery("SELECT id FROM telegram_users WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
+                $check = $this->db->superQuery("SELECT id FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
             } else {
                 $check = true;
             }
