@@ -276,6 +276,7 @@ class Home {
         } else {
             $buttons = array();
             $buttons[] = '';
+            $button_menu = array();
             if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
                 $data = file_get_contents(ROOT_DIR . '/data/bot_menu.php');
                 $button_menu = unserialize($data);
@@ -296,7 +297,14 @@ class Home {
                 $buttons[] = '/start';
             }
 
-            foreach($button_menu as $mb) {
+            $m = array();
+            if(!empty($button_menu)) {
+                $m = $button_menu;
+            } else {
+                $m[] = '/start';
+            }
+
+            foreach($m as $mb) {
                 $view3 = new Template();
                 $view3->path = ROOT_DIR . '/views/';
                 $view3->templ('options/bot_buttons.html');
