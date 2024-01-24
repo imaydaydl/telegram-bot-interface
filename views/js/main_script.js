@@ -744,7 +744,7 @@ $(document).ready(function(){
                 let innerButtons = [];
                 $(this).find('.innerButtons').each(function() {
                     let oneInner = {};
-                    if($(this).find('.innerButActon').data('id') != undefined && $(this).find('.innerButActon').data('id') != '') {
+                    if($(this).find('.innerButActon').data('id') != undefined && ($(this).find('.innerButActon').data('id') != '' || $(this).find('.innerButActon').data('id') == '0')) {
                         oneInner['action'] = $(this).find('.innerButActon').val();
                         oneInner['name'] = $(this).find('.innerButName').val();
                         innerButtons.push(oneInner);
@@ -762,19 +762,15 @@ $(document).ready(function(){
         });
 
         if(menu.length > 0) {
-            console.log(1, menu);
             for(const i in menu) {
                 json[i] = menu[i];
             }
-
-            console.log(2, json);
             $.ajax({
                 type: 'POST',
                 url: '/settings/menu',
                 data: json,
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response);
                     if(response.status == 'error') {
                         toast('error', 'Помилка!', 'Сталась помилка. ' + response.message);
                     } else {
