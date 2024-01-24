@@ -111,7 +111,9 @@ $(document).ready(function(){
     });
     $('.sendMessage').on('click', function() {
         let message = $('.message_tg').val();
-        let reciever = null;
+        let reciever = $('.recievers').val();
+
+        console.log(reciever);
 
         if(message == '') {
             toast('warning', 'Увага!', 'Текст повідомлення не може бути пустим.');
