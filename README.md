@@ -8,7 +8,7 @@ For the script to work, you need to install this unofficial library: [telegram-b
 Install the library using the composer command:
 
 ```shell
-composer require irazasyed/telegram-bot-sdk ^2.0
+composer install
 ```
 
 Register your bot in [BotFather](https://t.me/BotFather "BotFather") and insert the token on first run of project or in the settings of project or in the file data/config.php:
@@ -31,15 +31,15 @@ https://api.telegram.org/botBOT-TOKEN/setWebHook?url=https://website-address/pat
 
 
 #  Telegram bot with interface
-Щоб проект працював, вам необхідно встановити неофіційну бібліотеку: [telegram-bot-sdk](https://github.com/irazasyed/telegram-bot-sdk "telegram-bot-sdk"), [Документація бібліотеки](https://telegram-bot-sdk.readme.io/docs "Документація бібліотеки")
+пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: [telegram-bot-sdk](https://github.com/irazasyed/telegram-bot-sdk "telegram-bot-sdk"), [пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ](https://telegram-bot-sdk.readme.io/docs "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")
 
-Встановіть бібліотеку за допомогою наступної composer команди:
+пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ composer пїЅпїЅпїЅпїЅпїЅпїЅпїЅ:
 
 ```shell
-composer require irazasyed/telegram-bot-sdk ^2.0
+composer require install
 ```
 
-Зареєструйте свого бота у [BotFather](https://t.me/BotFather "BotFather") та вкажіть токен під час першого запуску проекту або в налаштуваннях проекту або в файлі data/config.php:
+пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ [BotFather](https://t.me/BotFather "BotFather") пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ data/config.php:
 
 ```php
 $config = array(
@@ -47,7 +47,7 @@ $config = array(
 );
 ```
 
-Посилання для активації WebHooks:
+пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ WebHooks:
 
-https://api.telegram.org/botТОКЕН_БОТА/setWebHook?url=https://посилання_на_сайт/шлях_до_файлу_бота
+https://api.telegram.org/botпїЅпїЅпїЅпїЅпїЅ_пїЅпїЅпїЅпїЅ/setWebHook?url=https://пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ_пїЅпїЅ_пїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅ_пїЅпїЅ_пїЅпїЅпїЅпїЅпїЅ_пїЅпїЅпїЅпїЅ
 
