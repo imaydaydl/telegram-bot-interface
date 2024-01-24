@@ -453,6 +453,9 @@ table.settings button:hover {
     color: #c5c5c5;
     border: 1px solid #495057;
 }
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #c5c5c5;
+}
 .dark_theme .select2-container--default .select2-selection--multiple {
     background-color: #262d3c;
     color: #c5c5c5;
