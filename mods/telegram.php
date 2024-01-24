@@ -52,6 +52,7 @@ class Telegram {
                 $r = $recievers[$i];
                 $tg->setChatId($r['chat_id']);
 
+                $tg->setParseMode('MarkdownV2');
                 $send = $tg->sendMessage($this->post['message']);
 
                 $this->writeMessageLog($r['chat_id'], $send);

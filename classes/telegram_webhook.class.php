@@ -1,7 +1,6 @@
 <?php
 
 include_once ROOT_DIR . '/vendor/autoload.php';
-include_once ROOT_DIR . '/data/bot_menu.php';
 
 use Telegram\Bot\Api;
 

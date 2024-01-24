@@ -384,18 +384,6 @@ class Home {
 
     private function createMenu() {
         try {
-            // $new_menu = json_encode($this->post);
-
-            // $bm = <<<HTML
-            // <?php
-
-            // \$bot_menu = {$new_menu};
-
-            // HTML;
-
-            // $file = fopen(ROOT_DIR . '/data/bot_menu.php', "w+");
-            // fwrite($file, $bm);
-            // fclose($file);
             file_put_contents(ROOT_DIR . '/data/bot_menu.php', serialize($this->post));
             @chmod(ROOT_DIR . '/data/bot_menu.php', 0666);
 
