@@ -79,7 +79,7 @@ class TelegramWebhook {
                                 $resp['reply_markup'] = $this->telegram->replyKeyboardMarkup($reply_markup);
                             }
 
-                            $resp['parse_mode'] = 'markdown';
+                            $resp['parse_mode'] = 'MarkdownV2';
 
                             $this->telegram->sendMessage($resp);
                         }
@@ -132,7 +132,7 @@ class TelegramWebhook {
 
                 return ['status' => 'success', 'username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text];
             } else {
-                $reply = "⚠️ **Ошибка!**
+                $reply = "⚠️ \*Ошибка!*
 🪬 Ваша заявка еще не принята. Завершите процес подачи или дождитесь подтверждения)";
                 $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
             }
