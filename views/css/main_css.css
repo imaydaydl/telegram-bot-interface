@@ -445,6 +445,14 @@ table.settings button:hover {
     width: 100%;
     display: flex;
 }
+.select2-container {
+    width: 100% !important;
+}
+.dark_theme .select2-container--default .select2-selection--single {
+    background-color: #262d3c;
+    color: #c5c5c5;
+    border: 1px solid #495057;
+}
 .dark_theme .select2-container--default .select2-selection--multiple {
     background-color: #262d3c;
     color: #c5c5c5;
