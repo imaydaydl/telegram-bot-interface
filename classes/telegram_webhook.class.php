@@ -30,11 +30,11 @@ class TelegramWebhook {
             fwrite($log, json_encode($result));
             fclose($log);
 
-            $text = $result["message"]["text"];
-            $chat_id = $result["message"]["chat"]["id"];
-            $name = $result["message"]["from"]["username"];
-            $first_name = $result["message"]["from"]["first_name"];
-            $last_name = $result["message"]["from"]["last_name"];
+            $text = isset($result["callback_query"]) ? $result['callback_query']['data'] : $result["message"]["text"];
+            $chat_id = isset($result["callback_query"]) ? $result['callback_query']['chat']['id'] : $result["message"]["chat"]["id"];
+            $name = isset($result["callback_query"]) ? $result['callback_query']['from']['username'] : $result["message"]["from"]["username"];
+            $first_name = isset($result["callback_query"]) ? $result['callback_query']['from']['first_name'] : $result["message"]["from"]["first_name"];
+            $last_name = isset($result["callback_query"]) ? $result['callback_query']['from']['last_name'] : $result["message"]["from"]["last_name"];
             $get_user = $this->getUser($chat_id);
             $old_id = $get_user['chat_id'];
             $username = $first_name . ' ' . $last_name;
