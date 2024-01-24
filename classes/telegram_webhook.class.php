@@ -26,10 +26,6 @@ class TelegramWebhook {
         try {
             $result = $this->telegram->getWebhookUpdates();
 
-            $log = fopen(ROOT_DIR . '/data/result2.php', "w+");
-            fwrite($log, json_encode($result));
-            fclose($log);
-
             $text = isset($result["callback_query"]) ? $result['callback_query']['data'] : $result["message"]["text"];
             $chat_id = isset($result["callback_query"]) ? $result['callback_query']["message"]['chat']['id'] : $result["message"]["chat"]["id"];
             $name = isset($result["callback_query"]) ? $result['callback_query']['from']['username'] : $result["message"]["from"]["username"];
@@ -40,15 +36,32 @@ class TelegramWebhook {
             $username = $first_name . ' ' . $last_name;
 
             if($chat_id && $text && $name) {
-                $check = $this->db->superQuery("SELECT id FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
+                $check = $this->db->superQuery("SELECT id, added FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
             } else {
                 $check = true;
             }
 
+            if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
+                $data = file_get_contents(ROOT_DIR . '/data/bot_menu.php');
+                $button_menu = unserialize($data);
+                foreach($button_menu as $d) {
+                    if($d['key'] == $text && isset($check['added'])) {
+                        if($d['required'] > 0) {
+                            if($d['required'] == 1) {
+                                $days = 'day';
+                            } else {
+                                $days = 'days';
+                            }
+                            if($check['added'] >= strtotime("+{$d['required']} {$days}")) {
+                                $check = true;
+                            }
+                        }
+                    }
+                }
+            }
+
             if(!$check || !isset($check['id'])) {
                 if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
-                    $data = file_get_contents(ROOT_DIR . '/data/bot_menu.php');
-                    $button_menu = unserialize($data);
                     foreach($button_menu as $d) {
                         if($d['key'] == $text) {
                             $resp = array();

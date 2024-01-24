@@ -85,10 +85,6 @@ class Telegram {
             $old_id = trim($result['old_id']);
             $time = time();
 
-            $log = fopen(ROOT_DIR . '/data/result.php', "w+");
-            fwrite($log, json_encode($result));
-            fclose($log);
-
             if($chat_id && $name && $result['text']) {
                 $this->db->query("INSERT INTO telegram_log (username, chat_id, name, action, added) VALUES ('{$username}', '{$chat_id}', '{$name}', '{$result['text']}', '{$time}')");
             }
