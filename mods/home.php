@@ -64,7 +64,7 @@ class Home {
             $view2->chat_id = '';
             $view2->name = '';
             $view2->compile('recievers');
-            $view2->chat_id = 0;
+            $view2->chat_id = 'all';
             $view2->name = 'Всім';
             $view2->compile('recievers');
             if(!empty($recList)) {

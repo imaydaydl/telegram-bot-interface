@@ -38,10 +38,11 @@ class Telegram {
         $tg->setToken($this->config['bot_token']);
 
         if($this->post['reciever'] != null) {
-            if($this->post['reciever'] == 'all') {
+            if($this->post['reciever'][0] == 'all') {
                 $recievers = $this->db->superQuery("SELECT * FROM telegram_users", true);
             } else {
-                $recievers = $this->db->superQuery("SELECT * FROM telegram_users WHERE chat_id IN ({$this->post['reciever']})", true);
+                $reciever_list = "'" . implode("','", $this->post['reciever']) . "'";
+                $recievers = $this->db->superQuery("SELECT * FROM telegram_users WHERE chat_id IN ({$reciever_list})", true);
             }
 
             $r_count = count($recievers);
