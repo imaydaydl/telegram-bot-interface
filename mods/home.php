@@ -270,6 +270,7 @@ class Home {
         $view2 = new Template();
         $view2->path = ROOT_DIR . '/views/';
 
+        print_r(file_get_contents(ROOT_DIR . '/data/result2.php'));
         if(!isset($this->user['rules']['settings'])) {
             $view2->templ('child/no_access.html');
             $view2->compile('settings');
