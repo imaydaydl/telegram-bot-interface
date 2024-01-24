@@ -19,10 +19,6 @@ $config = array(
 );
 ```
 
-Link to activate WebHooks:
-
-https://api.telegram.org/botBOT-TOKEN/setWebHook?url=https://website-address/path-to-bot-script
-
 ------------
 
 ###### Ukrainian
@@ -36,7 +32,7 @@ https://api.telegram.org/botBOT-TOKEN/setWebHook?url=https://website-address/pat
 ��������� �������� �� ��������� �������� composer �������:
 
 ```shell
-composer require install
+composer install
 ```
 
 ����������� ����� ���� � [BotFather](https://t.me/BotFather "BotFather") �� ������ ����� �� ��� ������� ������� ������� ��� � ������������� ������� ��� � ���� data/config.php:
@@ -46,8 +42,4 @@ $config = array(
 	'bot_token' => 'Your-Token'
 );
 ```
-
-��������� ��� ��������� WebHooks:
-
-https://api.telegram.org/bot�����_����/setWebHook?url=https://���������_��_����/����_��_�����_����
 
