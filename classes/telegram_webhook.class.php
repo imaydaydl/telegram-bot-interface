@@ -49,7 +49,11 @@ class TelegramWebhook {
                         if($d['key'] == $text) {
                             $resp = array();
                             $resp['chat_id'] = $chat_id;
-                            $resp['text'] = $d['text'];
+
+                            $str1 = array(".", "[", "]", "(", ")", "!", "|");
+                            $str2 = array('\\.', '\\[', '\\]', '\\(', '\\)', '\\!', '\\|');
+
+                            $resp['text'] = str_replace($str1, $str2, $d['text']);
 
                             $reply_markup = array();
                             if(isset($d['inner']) && !empty($d['inner'])) {
