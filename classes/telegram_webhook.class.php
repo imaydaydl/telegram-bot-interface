@@ -79,7 +79,7 @@ class TelegramWebhook {
                                 $resp['reply_markup'] = $this->telegram->replyKeyboardMarkup($reply_markup);
                             }
 
-                            $resp['parse_mode'] = 'MarkdownV2';
+                            $resp['parse_mode'] = 'markdown';
 
                             $this->telegram->sendMessage($resp);
                         }
