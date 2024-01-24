@@ -301,7 +301,13 @@ class Home {
             if(!empty($button_menu)) {
                 $m = $button_menu;
             } else {
-                $m[] = '/start';
+                $m[] = [
+                    'key' => '/start',
+                    'inner' => [],
+                    'global' => [],
+                    'text' => '',
+                    'required' => ''
+                ];
             }
 
             foreach($m as $mb) {
