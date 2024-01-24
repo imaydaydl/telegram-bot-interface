@@ -32,25 +32,23 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td class="bots_settings">
-                <select class="basic-multiple buttons_selector" name="button[]">
-                    {buttons}
-                </select>
-                <div class="fields_buttons">
-                    <div class="fields_left">
-                        <textarea></textarea>
-                    </div>
-                    <div class="fields_right">
-                        <button class="btn btn-primary addBotButton">Додати кнопку</button>
-                    </div>
-                </div>
-            </td>
-        </tr>
+        {bot_menu}
         <tr>
             <td class="text_right">
+                <button class="btn btn-primary addNewButton">Додати окрему кнопку</button>
+                <button class="btn btn-primary addMenu">Додати меню</button>
                 <button class="btn btn-primary saveBotMenu">Зберегти</button>
             </td>
         </tr>
     </tbody>
 </table>
+
+<script>
+    var completeButtons = [];
+    var allButons = [];
+    if(completeButtons.length > 0) {
+        for(const id in completeButtons) {
+            allButons.push(completeButtons[id]);
+        }
+    }
+</script>

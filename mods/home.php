@@ -44,6 +44,9 @@ class Home {
             case 'saveSettings':
                 $this->saveSettings();
                 break;
+            case 'menu':
+                $this->createMenu();
+                break;
         }
     }
 
@@ -56,7 +59,23 @@ class Home {
             $view2->templ('child/no_access.html');
             $view2->compile('tg_sends');
         } else {
+            $recList = $this->db->superQuery("SELECT * FROM telegram_users GROUP BY chat_id", true);
+            $view2->templ('options/recievers.html');
+            $view2->chat_id = '';
+            $view2->name = '';
+            $view2->compile('recievers');
+            $view2->chat_id = 0;
+            $view2->name = 'Всім';
+            $view2->compile('recievers');
+            if(!empty($recList)) {
+                foreach($recList as $rec) {
+                    $view2->chat_id = $rec['chat_id'];
+                    $view2->name = $rec['username'] . ' (' . $rec['name'] . ')';
+                    $view2->compile('recievers');
+                }
+            }
             $view2->templ('child/send_message.html');
+            $view2->recievers = $view2->result['recievers'];
             $view2->compile('tg_sends');
         }
 
@@ -255,28 +274,75 @@ class Home {
             $view2->templ('child/no_access.html');
             $view2->compile('settings');
         } else {
-            $view2->templ('options/bot_buttons.html');
             $buttons = array();
-            $buttons[] = [
-                'value' => '/start',
-                'name' => '/start'
-            ];
-            // if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
-            //     require_once ROOT_DIR . '/data/bot_menu.php';
-            //     foreach($buttons as $k => $d) {
-            //         $buttons[] = [
-            //             'value' => $k,
-            //             'name' => $k
-            //         ];
-            //     }
-            // }
-            foreach($buttons as $b) {
-                $view2->val = $b['value'];
-                $view2->name = $b['name'];
-                $view2->compile('buttons');
+            $buttons[] = '';
+            if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
+                $data = file_get_contents(ROOT_DIR . '/data/bot_menu.php');
+                $button_menu = unserialize($data);
+                foreach($button_menu as $d) {
+                    if(!in_array($d['key'], $buttons)) $buttons[] = $d['key'];
+                    if(isset($d['inner']) && !empty($d['inner'])) {
+                        foreach($d['inner'] as $inner) {
+                            if(!in_array($inner['action'], $buttons)) $buttons[] = $inner['action'];
+                        }
+                    }
+                    if(isset($d['global']) && !empty($d['global'])) {
+                        foreach($d['global'] as $global) {
+                            if(!in_array($global, $buttons)) $buttons[] = $global;
+                        }
+                    }
+                }
+            } else {
+                $buttons[] = '/start';
             }
+
+            foreach($button_menu as $mb) {
+                $view3 = new Template();
+                $view3->path = ROOT_DIR . '/views/';
+                $view3->templ('options/bot_buttons.html');
+                foreach($buttons as $b) {
+                    if($b == $mb['key']) {
+                        $view3->selected = 'selected';
+                    } else {
+                        $view3->selected = '';
+                    }
+                    $view3->val = $b;
+                    $view3->name = $b;
+                    $view3->compile('buttons');
+                }
+
+                $view2->templ('tabs/bot_menu.html');
+                if(isset($mb['inner']) && !empty($mb['inner'])) {
+                    $view3->templ('child/inners.html');
+                    foreach($mb['inner'] as $inner) {
+                        $view3->action = $inner['action'];
+                        $view3->name = $inner['name'];
+                        $view3->compile('inners');
+                    }
+                    $view2->inners = $view3->result['inners'];
+                } else {
+                    $view2->inners = '';
+                }
+
+                if(isset($mb['global']) && !empty($mb['global'])) {
+                    $view3->templ('child/globals.html');
+                    foreach($mb['global'] as $global) {
+                        $view3->name = $global;
+                        $view3->compile('globals');
+                    }
+                    $view2->globals = $view3->result['globals'];
+                } else {
+                    $view2->globals = '';
+                }
+                
+                $view2->buttons = $view3->result['buttons'];
+                $view2->required = $mb['required'];
+                $view2->text = $mb['text'];
+                $view2->compile('bot_menu');
+            }
+            
             $view2->templ('child/settings.html');
-            $view2->buttons = $view2->result['buttons'];
+            $view2->bot_menu = $view2->result['bot_menu'];
             $view2->bot_token = $this->config['bot_token'];
             $view2->tg_url = $this->config['bot_url'];
             $view2->chat_id = $this->config['chat_id'];
@@ -300,6 +366,29 @@ class Home {
         $this->view->user_name = $this->user['login'];
 
         $this->view->render('index.html');
+    }
+
+    private function createMenu() {
+        try {
+            // $new_menu = json_encode($this->post);
+
+            // $bm = <<<HTML
+            // <?php
+
+            // \$bot_menu = {$new_menu};
+
+            // HTML;
+
+            // $file = fopen(ROOT_DIR . '/data/bot_menu.php', "w+");
+            // fwrite($file, $bm);
+            // fclose($file);
+            file_put_contents(ROOT_DIR . '/data/bot_menu.php', serialize($this->post));
+            @chmod(ROOT_DIR . '/data/bot_menu.php', 0666);
+
+            echo json_encode(['status' => 'success']);
+        } catch(Exception $e) {
+            return json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
 
     private function creatConnect() {

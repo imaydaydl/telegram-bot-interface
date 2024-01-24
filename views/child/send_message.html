@@ -1,5 +1,8 @@
-<textarea class="message_tg"></textarea>
+<textarea class="message_tg" placeholder="Текст повідомлення"></textarea>
 <div class="control_buttons">
-    <div class="control_left"><button class="btn btn-secondary clearMessage">Очистити</button></div>
-    <div class="control_right"><button class="btn btn-primary sendMessage">Відправити</button></div>
+    <div class="control_left"><select class="basic-multiple recievers" name="recievers[]" style="width:100%;" multiple="multiple">{recievers}</select></div>
+    <div class="control_right">
+        <button class="btn btn-secondary clearMessage">Очистити</button>
+        <button class="btn btn-primary sendMessage">Відправити</button>
+    </div>
 </div>

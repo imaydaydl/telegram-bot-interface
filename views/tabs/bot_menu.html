@@ -1,0 +1,29 @@
+<tr class="menuBlock">
+    <td class="bots_settings">
+        <div class="selector_block">
+            <select class="basic-multiple buttons_selector" name="button[]">
+                {buttons}
+            </select>
+            <button class="btn btn-danger deleteCurrentButton"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div class="fields_buttons">
+            <div class="fields_left">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="count_days">Як часто можна викликати цю команду</span>
+                    <input type="number" class="form-control count_days" placeholder="Кількість днів" aria-describedby="count_days" value="{required}">
+                </div>
+                <textarea class="menuText" placeholder="Текст повідомлення">{text}</textarea>
+            </div>
+            <div class="fields_right">
+                {globals}
+                <button class="btn btn-primary addBotButton">Додати глобальну кнопку</button>
+            </div>
+        </div>
+        <div class="text_buttons">
+            <div class="text-center">
+                <button class="btn btn-primary addTextButton">Додати кнопку до тексту</button>
+            </div>
+            <div class="innerButtonsBlock">{inners}</div>
+        </div>
+    </td>
+</tr>

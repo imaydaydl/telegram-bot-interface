@@ -122,4 +122,11 @@
             $this->blocks = array();
             $this->copyTemplate = $this->template;
         }
+
+        public function clearT() {
+            $this->vars = array();
+            $this->blocks = array();
+            $this->copyTemplate = null;
+            $this->template = null;
+        }
     }

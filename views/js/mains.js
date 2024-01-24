@@ -4,6 +4,8 @@ if(localStorage.getItem('dark_theme')) dark_theme = localStorage.getItem('dark_t
 var h = (new Date()).getHours();
 
 $(document).ready(function(){
+    $('.basic-multiple').select2();
+
     changeTheme();
     changeActive();
 
@@ -381,7 +383,6 @@ $(document).ready(function(){
 		
 		$('.user_modal').animate({opacity: 1, top: $(window).height()/2-$('.user_modal').height()/2}, 'slow', function() {});
     });
-
     $('body').on('click', '.saveUser', function() {
         let pass = $('body').find('#edit_pass').val();
         let pass_again = $('body').find('#edit_repeat_pass').val();
@@ -461,7 +462,6 @@ $(document).ready(function(){
             }
         }
     });
-
     $('body').on('click', '.blockUser', function() {
         let this_button = $(this);
         let user_id = $(this).data('id');
@@ -492,7 +492,6 @@ $(document).ready(function(){
             }
         });
     });
-
     $('.editProfile').on('click', function() {
         let user_id = $('.profile_info div:first-child span:nth-child(2)').html();
         let name = $('.profile_info div:nth-child(2) span:nth-child(2)').html();
@@ -571,13 +570,253 @@ $(document).ready(function(){
     });
     $('body').on('click', '.addBotButton', function() {
         $(this).attr('disabled', true);
-        console.log(1);
-        let block = $(this).closest('div.fields_right');
-        $(this).before('<input type="text" class="button_name" placeholder="Кніпка">');
+        $(this).before('<span class="line_new_button"><input type="text" class="button_name" placeholder="Кнопка"><button class="btn btn-success acceptButton"><i class="fa-solid fa-check"></i></button></span>');
+    });
+    $('body').on('click', '.acceptButton', function() {
+        let bact = $(this).closest('span.line_new_button').find('.button_name');
+        let but_name = bact.val();
+
+        if(but_name == '') {
+            toast('warning', 'Увага!', 'Заповніть назву кнопки');
+        } else {
+            if(bact.data('id') != undefined && bact.data('id') != '') {
+                allButons[bact.data('id')] = bactval;
+            } else {
+                if(!allButons.includes(but_name)) {
+                    allButons.push(but_name);
+                }
+                for(const i in allButons) {
+                    if(allButons[i] == but_name) {
+                        bact.attr('data-id', i);
+                    }
+                }
+            }
+
+            bact.attr('data-apr', 'approved');
+
+            $(this).closest('span.line_new_button').append('<button class="btn btn-danger deleteButton"><i class="fa-solid fa-trash"></i></button>');
+            $(this).remove();
+            toast('success', 'Успішно!', 'Глобальну кнопку додано');
+            $('.addBotButton').attr('disabled', false);
+        }
+    });
+    $('body').on('keyup', '.innerButActon, .innerButName', function() {
+        if($(this).closest('div.innerButtons').find('.deleteInnerButton').length > 0) { 
+            $(this).closest('div.innerButtons').find('.deleteInnerButton').remove();
+            $(this).closest('div.innerButtons').append('<button class="btn btn-success acceptInnerButton"><i class="fa-solid fa-check"></i></button>');
+        }
+    });
+    $('body').on('change', '.buttons_selector', function() {
+        let b = $(this).val();
+        let all = 0;
+        $('body').find('.buttons_selector').each(function() {
+            if($(this).val() == b) {
+                all++;
+            }
+        });
+        if(all > 1) {
+            toast('warning', 'Увага!', 'Налаштування на цю кнопку вже створено');
+            $(this).val('');
+        }
+    });
+    $('body').on('click', '.deleteCurrentButton', function() {
+        $(this).closest('tr').remove();
+    });
+    $('body').on('click', '.deleteButton', function() {
+        let id = $(this).closest('span.line_new_button').find('.button_name').data('id');
+        $(this).closest('span.line_new_button').remove();
+        if($('body').find('input[data-id="' + id + '"]').length == 0) delete allButons[id];
+    });
+    $('body').on('keyup', '.button_name', function() {
+        if($(this).closest('span').find('.acceptButton').length === 0) {
+            $(this).closest('span').append('<button class="btn btn-success acceptButton"><i class="fa-solid fa-check"></i></button>');
+            $('.addBotButton').attr('disabled', true);
+        }
+    });
+    $('body').on('click', '.addTextButton', function() {
+        $(this).closest('.text_buttons').find('.innerButtonsBlock').append('<div class="innerButtons"><input type="text" class="innerButName" placeholder="Назва кнопки">'
+            + '<input type="text" class="innerButActon" placeholder="Дія">'
+            + '<button class="btn btn-success acceptInnerButton"><i class="fa-solid fa-check"></i></button></div>');
+    });
+    $('body').on('click', '.acceptInnerButton', function() {
+        let this_but = $(this);
+        let this_block = $(this).closest('div.innerButtons');
+        let bname = this_block.find('.innerButName').val();
+        let bact = this_block.find('.innerButActon');
+        let bactval = bact.val();
+
+        if(bname == '') {
+            toast('warning', 'Увага!', 'Необхідно вказати назву кнопки');
+        } else if(bactval == '') {
+            toast('warning', 'Увага!', 'Необхідно вказати дію кнопки');
+        } else {
+            if(bact.data('id') != undefined && bact.data('id') != '') {
+                allButons[bact.data('id')] = bactval;
+            } else {
+                if(!allButons.includes(bactval)) {
+                    allButons.push(bactval);
+                }
+                for(const i in allButons) {
+                    if(allButons[i] == bactval) {
+                        bact.attr('data-id', i);
+                    }
+                }
+            }
+
+            bact.attr('data-apr', 'approved');
+            this_but.remove();
+            this_block.append('<button class="btn btn-danger deleteInnerButton"><i class="fa-solid fa-trash"></i></button>');
+            toast('success', 'Успішно!', 'Кнопку до тексту додано');
+        }
+    });
+    $('body').on('click', '.deleteInnerButton', function() {
+        let id = $(this).closest('div.innerButtons').find('.innerButActon').data('id');
+        $(this).closest('div.innerButtons').remove();
+        if($('body').find('input[data-id="' + id + '"]').length == 0) delete allButons[id];
+    });
+    $('.addNewButton').on('click', function(){
+        $('body').find('.menuBlock').last().after('<tr class="menuBlock">'
+            + '<td class="bots_settings">'
+                + '<div class="line_new_button">'
+                    + '<input class="newButtonName" type="text">'
+                    + '<button class="btn btn-success saveNewButton"><i class="fa-solid fa-check"></i></button>'
+                + '</div>'
+            + '</td>'
+        + '</tr>');
+    });
+    $('body').on('click', '.saveNewButton', function() {
+        let this_but_name = $(this).closest('.line_new_button').find('.newButtonName').val();
+
+        if(this_but_name == '') {
+            toast('warning', 'Увага!', 'Спочатку введіть ім\я кнопки');
+        } else {
+            allButons.push(this_but_name);
+
+            $(this).closest('.bots_settings').append('<div class="selector_block">'
+                    + '<select class="basic-multiple buttons_selector" name="button[]"></select>'
+                    + '<button class="btn btn-danger deleteCurrentButton"><i class="fa-solid fa-trash"></i></button>'
+                + '</div>'
+                + '<div class="fields_buttons">'
+                    +'<div class="fields_left">'
+                        + '<div class="input-group mb-3">'
+                            + '<span class="input-group-text" id="count_days">Як часто можна викликати цю команду</span>'
+                            + '<input type="number" class="form-control count_days" placeholder="Кількість днів" aria-describedby="count_days">'
+                        + '</div>'
+                        + '<textarea class="menuText" placeholder="Текст повідомлення"></textarea>'
+                    + '</div>'
+                    + '<div class="fields_right">'
+                        + '<button class="btn btn-primary addBotButton">Додати глобальну кнопку</button>'
+                    + '</div>'
+                + '</div>'
+                + '<div class="text_buttons">'
+                    + '<div class="text-center">'
+                        + '<button class="btn btn-primary addTextButton">Додати кнопку до тексту</button>'
+                    + '</div>'
+                    + '<div class="innerButtonsBlock"></div>'
+                + '</div>');
+
+            $(this).closest('.bots_settings').find('.buttons_selector').append('<option value=""></option>');
+            for(const i in allButons) {
+                $(this).closest('.bots_settings').find('.buttons_selector').append('<option value="' + allButons[i] + '">' + allButons[i] + '</option>');
+            }
+
+            $(this).closest('.line_new_button').remove();
+
+        }
+    });
+    $('.saveBotMenu').on('click', function() {
+        let json = {};
+        let menu = [];
+        $('body .bots_settings').each(function() {
+            let keyButton = $(this).find('select.buttons_selector').val();
+            if(keyButton == '') {
+                toast('warning', 'Увага!', 'В селекторі не обрано кнопку, якої прив\'язується текст')
+            } else {
+                let keyRequired = $(this).find('.count_days').val() ?? 0;
+                let globalButtons = [];
+                $(this).find('.button_name').each(function() {
+                    if(($(this).data('id') != undefined && $(this).data('id') != '') || $(this).data('id') == '0') {
+                        globalButtons.push($(this).val());
+                    }
+                });
+                let innerButtons = [];
+                $(this).find('.innerButtons').each(function() {
+                    let oneInner = {};
+                    if($(this).find('.innerButActon').data('id') != undefined && $(this).find('.innerButActon').data('id') != '') {
+                        oneInner['action'] = $(this).find('.innerButActon').val();
+                        oneInner['name'] = $(this).find('.innerButName').val();
+                        innerButtons.push(oneInner);
+                    }
+                });
+
+                let oneMenu = {};
+                oneMenu['key'] = keyButton;
+                oneMenu['required'] = keyRequired;
+                oneMenu['text'] = $(this).find('.menuText').val();
+                oneMenu['global'] = globalButtons;
+                oneMenu['inner'] = innerButtons;
+                menu.push(oneMenu);
+            }
+        });
+
+        if(menu.length > 0) {
+            console.log(1, menu);
+            for(const i in menu) {
+                json[i] = menu[i];
+            }
+
+            console.log(2, json);
+            $.ajax({
+                type: 'POST',
+                url: '/settings/menu',
+                data: json,
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    if(response.status == 'error') {
+                        toast('error', 'Помилка!', 'Сталась помилка. ' + response.message);
+                    } else {
+                        toast('success', 'Успішно!', 'Нове меню бота успішно створено');
+                    }
+                }
+            });
+        }
+    });
+    $('.addMenu').on('click', function() {
+        $('body').find('.menuBlock').last().after('<tr class="menuBlock">'
+            + '<td class="bots_settings">'
+                + '<div class="selector_block">'
+                    + '<select class="basic-multiple buttons_selector" name="button[]"></select>'
+                    + '<button class="btn btn-danger deleteCurrentButton"><i class="fa-solid fa-trash"></i></button>'
+                + '</div>'
+                + '<div class="fields_buttons">'
+                    +'<div class="fields_left">'
+                        + '<div class="input-group mb-3">'
+                            + '<span class="input-group-text" id="count_days">Як часто можна викликати цю команду</span>'
+                            + '<input type="number" class="form-control count_days" placeholder="Кількість днів" aria-describedby="count_days">'
+                        + '</div>'
+                        + '<textarea class="menuText" placeholder="Текст повідомлення"></textarea>'
+                    + '</div>'
+                    + '<div class="fields_right">'
+                        + '<button class="btn btn-primary addBotButton">Додати глобальну кнопку</button>'
+                    + '</div>'
+                + '</div>'
+                + '<div class="text_buttons">'
+                    + '<div class="text-center">'
+                        + '<button class="btn btn-primary addTextButton">Додати кнопку до тексту</button>'
+                    + '</div>'
+                    + '<div class="innerButtonsBlock"></div>'
+                + '</div>'
+            + '</td>'
+        + '</tr>');
+
+        $('body').find('.menuBlock').last().find('.buttons_selector').append('<option value=""></option>');
+        for(const i in allButons) {
+            $('body').find('.menuBlock').last().find('.buttons_selector').append('<option value="' + allButons[i] + '">' + allButons[i] + '</option>');
+        }
     });
     $('body').on('click', '.connect_webhooks', function() {
         let url = '';
-        console.log(window.location);
         if(window.location.pathname == '/install') {
             url = '/install/creat_connect';
         } else {

@@ -43,6 +43,7 @@ input, textarea, select, button {
 }
 .dark_theme input, .dark_theme textarea, .dark_theme select, .dark_theme button {
     background-color: #1C212B;
+    border: 1px solid #495057;
     color: #c5c5c5;
 }
 table.history input, table.history textarea {
@@ -402,8 +403,63 @@ table.settings button:hover {
     padding-right: 5px;
 }
 .fields_right {
-    width: 140px;
+    width: 165px;
     display: table-cell;
     vertical-align: top;
     padding-left: 5px;
+}
+.line_new_button {
+    display: flex;
+}
+.text_buttons {
+    width: 100%;
+}
+.text_buttons input {
+    width: 42% !important;
+    margin: 3px;
+}
+.innerButtonsBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.innerButtons {
+    width: 50%;
+    display: flex;
+}
+.dark_theme .input-group-text {
+    color: #c5c5c5 !important;
+    background-color: #2b3035 !important;
+    border: 1px solid #495057 !important;
+}
+.dark_theme .form-control {
+    color: #c5c5c5 !important;
+    background-color: #1C212B !important;
+    border: 1px solid #495057 !important;
+}
+.selector_block {
+    width: 100%;
+    display: flex;
+}
+.dark_theme .select2-container--default .select2-selection--multiple {
+    background-color: #262d3c;
+    color: #c5c5c5;
+    border: 1px solid #495057;
+}
+.dark_theme .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #262d3c;
+    color: #c5c5c5;
+    border: 1px solid #495057;
+}
+.dark_theme .select2-dropdown {
+    background-color: #262d3c;
+    color: #c5c5c5;
+    border: 1px solid #495057;
+}
+.dark_theme .select2-container--default .select2-results__option--selected {
+    background-color: #1c212a;
 }
