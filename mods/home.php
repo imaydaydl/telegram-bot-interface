@@ -356,6 +356,7 @@ class Home {
             }
             
             $view2->templ('child/settings.html');
+            $view2->buttonAr = json_encode($buttons);
             $view2->bot_menu = $view2->result['bot_menu'];
             $view2->bot_token = $this->config['bot_token'];
             $view2->tg_url = $this->config['bot_url'];
