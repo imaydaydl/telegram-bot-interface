@@ -26,6 +26,10 @@ class TelegramWebhook {
         try {
             $result = $this->telegram->getWebhookUpdates();
 
+            $webhook_file = fopen(ROOT_DIR . '/data/webhook.php', "w+");
+            fwrite($webhook_file, $result);
+            fclose($webhook_file);
+
             $text = isset($result["callback_query"]) ? $result['callback_query']['data'] : $result["message"]["text"];
             $chat_id = isset($result["callback_query"]) ? $result['callback_query']["message"]['chat']['id'] : $result["message"]["chat"]["id"];
             $name = isset($result["callback_query"]) ? $result['callback_query']['from']['username'] : $result["message"]["from"]["username"];
