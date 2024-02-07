@@ -132,6 +132,8 @@ class User {
                 $this->session->setUserdata($user_data);
 
                 return ['success' => 'Успішний вхід в акаунт'];
+            } else {
+                return ['error' => 'Вхід не підтверджено'];
             }
         } catch(Exception $e) {
             return ['error' => $e->getMessage()];

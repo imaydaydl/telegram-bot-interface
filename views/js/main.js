@@ -938,9 +938,7 @@ function login() {
                             data: {chat_id: response.chat_id},
                             dataType: 'json',
                             success: function(response) {
-                                if(response.status == 'error') {
-                                    toast('error', 'Помилка!', 'Сталась помилка під час авторизації. ' + response.message);
-                                } else {
+                                if(response.status == 'success') {
                                     toast('success', 'Успішно!', 'Авторизація успішна.');
                                     setTimeout(function() {
                                         window.location = '/';
