@@ -88,7 +88,7 @@ class User {
             $resp['text'] = "Ви підтверджуєте вхід в систему\\?";
             $inline = array();
             $but = array();
-            $but['text'] = "✅ Принимаю";
+            $but['text'] = "✅ Підтверджую";
             $but['callback_data'] = "/confirm_login";
             $inline[] = $but;
             $inline = array_chunk($inline, 2);

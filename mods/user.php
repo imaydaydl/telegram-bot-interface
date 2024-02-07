@@ -291,7 +291,7 @@ class UserMod {
             echo json_encode(['status' => 'error', 'message' => 'Старий пароль не може бути пустим']);
         } else {
             $mdold_pass = md5($old_pass . $this->config['hash']);
-            $check = $this->db->superQuery("SELECT password FROM users WHERE id = '{$user_id}'");
+            $check = $this->db->superQuery("SELECT password, two_step FROM users WHERE id = '{$user_id}'");
             if($mdold_pass != $check['password']) {
                 echo json_encode(['status' => 'error', 'message' => 'Старий пароль не правильний']);
             } else {
@@ -299,8 +299,13 @@ class UserMod {
                 if($check2 && $check2['id'] != $user_id) {
                     echo json_encode(['status' => 'error', 'message' => 'Такий логін вже існує']);
                 } else {
-                    $mdpassword = md5($this->post['password'] . $this->config['hash']);
-                    $this->db->query("UPDATE users SET `name` = '{$this->post['name']}', `second_name` = '{$this->post['second']}', `password` = '{$mdpassword}', `login` = '{$this->post['login']}', `two_step` = '{$this->post['two_step']}' WHERE id = '{$user_id}'");
+                    $mdpassword = $this->post['password'] ? md5($this->post['password'] . $this->config['hash']) : $mdold_pass;
+                    $chat_id = '';
+                    if($check['two_step'] != $this->post['two_step'] && $this->post['two_step'] == 1) {
+                        $chat_query = $this->db->superQuery("SELECT chat_id FROM telegram_two_factory WHERE hash = '{$this->post['two_factory_code']}' ORDER BY added DESC LIMIT 1") ?? null;
+                        if($chat_query != null) $chat_id = ", two_step_chat_id = '{$chat_query['chat_id']}'";
+                    }
+                    $this->db->query("UPDATE users SET `name` = '{$this->post['name']}', `second_name` = '{$this->post['second']}', `password` = '{$mdpassword}', `login` = '{$this->post['login']}', `two_step` = '{$this->post['two_step']}'{$chat_id} WHERE id = '{$user_id}'");
                     echo json_encode(['status' => 'success']);
                 }
             }

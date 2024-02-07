@@ -547,11 +547,12 @@ $(document).ready(function(){
                 let json = {};
                 json.user_id = user_id;
                 json.old_pass = old_pass;
-                json.password = new_pass;
+                if(old_pass != '') json.password = new_pass;
                 json.name = name;
                 json.second = second;
                 json.login = login;
                 json.two_step = $('body').find('#userTwoFactory').is(':checked') ? 1 : 0;
+                json.two_factory_code = $('body').find('#two_factory_code').val() ?? '';
 
                 $.ajax({
                     type: 'POST',
