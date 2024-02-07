@@ -58,7 +58,7 @@ class TelegramWebhook {
                         $h = bin2hex(random_bytes(10));
                         $time = time();
 
-                        $this->db->query("INSERT INTO telegram_two_factory (chat_id, hash, added) VALUES ('{$chat_id}', '{$h}'), '{$time}'");
+                        $this->db->query("INSERT INTO telegram_two_factory (chat_id, hash, added) VALUES ('{$chat_id}', '{$h}', '{$time}')");
 
                         $resp = array();
                         $resp['parse_mode'] = 'MarkdownV2';
