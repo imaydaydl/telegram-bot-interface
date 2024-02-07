@@ -64,7 +64,10 @@ class TelegramWebhook {
                         $resp['parse_mode'] = 'MarkdownV2';
                         $resp['chat_id'] = $chat_id;
                         $resp['text'] = "Вкажіть цей код `{$h}` на сайті в полі *КОД* для прив\\'язки двухфакторної авторизації";
-                        $this->telegram->sendMessage($resp);
+                        $tg = $this->telegram->sendMessage($resp);
+                        $webhook_r4_file = fopen(ROOT_DIR . '/data/webhook_r4.php', "w+");
+                        fwrite($webhook_r4_file, $tg);
+                        fclose($webhook_r4_file);
                     } catch(Exception $e) {
                         $webhook_r3_file = fopen(ROOT_DIR . '/data/webhook_r3.php', "w+");
                         fwrite($webhook_r3_file, $e->getMessage());
