@@ -542,7 +542,7 @@ $(document).ready(function(){
             } else {
                 let name = $('body').find('#edit_name').val();
                 let second = $('body').find('#edit_second').val();
-                let login = $('body').find('edit_login').val();
+                let login = $('body').find('#edit_login').val();
 
                 let json = {};
                 json.user_id = user_id;
@@ -551,6 +551,7 @@ $(document).ready(function(){
                 json.name = name;
                 json.second = second;
                 json.login = login;
+                json.two_step = $('body').find('#userTwoFactory').is(':checked') ? 1 : 0;
 
                 $.ajax({
                     type: 'POST',

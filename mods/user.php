@@ -300,7 +300,7 @@ class UserMod {
                     echo json_encode(['status' => 'error', 'message' => 'Такий логін вже існує']);
                 } else {
                     $mdpassword = md5($this->post['password'] . $this->config['hash']);
-                    $this->db->query("UPDATE users SET `name` = '{$this->post['name']}', `second_name` = '{$this->post['second']}', `password` = '{$mdpassword}', `login` = '{$this->post['login']}' WHERE id = '{$user_id}'");
+                    $this->db->query("UPDATE users SET `name` = '{$this->post['name']}', `second_name` = '{$this->post['second']}', `password` = '{$mdpassword}', `login` = '{$this->post['login']}', `two_step` = '{$this->post['two_step']}' WHERE id = '{$user_id}'");
                     echo json_encode(['status' => 'success']);
                 }
             }

@@ -416,6 +416,11 @@ class Home {
 
     private function saveSettings() {
         try {
+            $bot_token = isset($this->post['bot_token']) ? $this->post['bot_token'] : $this->config['bot_token'];
+            $bot_url = isset($this->post['bot_url']) ? $this->post['bot_url'] : $this->config['bot_url'];
+            $chat_id = isset($this->post['chat_id']) ? $this->post['chat_id'] : $this->config['chat_id'];
+            $two_factory = isset($this->post['two_factory']) ? $this->post['two_factory'] : $this->config['two_factory'];
+
             $config = <<<HTML
             <?php
 
@@ -425,13 +430,13 @@ class Home {
 
             'hash' => '{$this->config['hash']}',
 
-            'bot_token' => '{$this->post['bot_token']}',
+            'bot_token' => '{$bot_token}',
 
-            'bot_url' => '{$this->post['bot_url']}',
+            'bot_url' => '{$bot_url}',
 
-            'chat_id' => '{$this->post['chat_id']}',
+            'chat_id' => '{$chat_id}',
 
-            'two_factory' => '{$this->post['two_factory']}'
+            'two_factory' => '{$two_factory}'
 
             );
 
