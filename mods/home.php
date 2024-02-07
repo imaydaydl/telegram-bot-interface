@@ -361,6 +361,7 @@ class Home {
             $view2->bot_token = $this->config['bot_token'];
             $view2->tg_url = $this->config['bot_url'];
             $view2->chat_id = $this->config['chat_id'];
+            $view2->two_factory = $this->config['two_factory'] == '1' ? 'checked' : '';
             $view2->compile('settings');
         }
 
@@ -420,15 +421,17 @@ class Home {
 
             \$config = array(
 
-            'allowed_host' => {$this->config['allowed_host']},
+            'allowed_host' => '{$this->config['allowed_host']}',
 
             'hash' => '{$this->config['hash']}',
 
-            'bot_token' => '{$this->post['tg_bot']}',
+            'bot_token' => '{$this->post['bot_token']}',
 
-            'bot_url' => '{$this->post['tg_url']}',
+            'bot_url' => '{$this->post['bot_url']}',
 
-            'chat_id' => '{$this->post['chat_id']}'
+            'chat_id' => '{$this->post['chat_id']}',
+
+            'two_factory' => '{$this->post['two_factory']}'
 
             );
 

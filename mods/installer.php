@@ -257,7 +257,18 @@ class Installer {
             `name` varchar(50) NOT NULL default '',
             `action` text default '',
             `added` int(10) default NULL,
-            PRIMARY KEY  (`id`)
+            PRIMARY KEY  (`id`),
+            KEY `added` (`added`)
+        ) ENGINE=" . $storage_engine . " DEFAULT CHARACTER SET " . $collate . " COLLATE " . $collate . "_general_ci";
+
+        $tableSchema[] = "DROP TABLE IF EXISTS telegram_two_factory";
+
+        $tableSchema[] = "CREATE TABLE telegram_two_factory (
+            `chat_id` int(111) unsigned NOT NULL,
+            `hash` varchar(50) NOT NULL,
+            `added` int(10) default NULL,
+            PRIMARY KEY  (`chat_id`),
+            KEY `added` (`added`)
         ) ENGINE=" . $storage_engine . " DEFAULT CHARACTER SET " . $collate . " COLLATE " . $collate . "_general_ci";
 
         $tableSchema[] = "DROP TABLE IF EXISTS users";
@@ -270,10 +281,27 @@ class Installer {
             `password` varchar(200) NOT NULL,
             `status` int(1) default 1,
             `two_step` int(1) default 0,
+            `two_step_chat_id` int(111) default NULL,
             `reg_date` int(10) default NULL,
             PRIMARY KEY  (`id`),
             UNIQUE KEY `login` (`login`),
+            UNIQUE KEY `two_step_chat_id` (`two_step_chat_id`),
             KEY `reg_date` (`reg_date`)
+        ) ENGINE=" . $storage_engine . " DEFAULT CHARACTER SET " . $collate . " COLLATE " . $collate . "_general_ci";
+
+        $tableSchema[] = "DROP TABLE IF EXISTS users_login";
+
+        $tableSchema[] = "CREATE TABLE users_login (
+            `id` mediumint(11) unsigned NOT NULL auto_increment,
+            `user_id` mediumint(8) unsigned NOT NULL,
+            `is_two_factory` int(1) default 0,
+            `chat_id` int(111) default NULL,
+            `status` int(1) default 0,
+            `added` int(10) default NULL,
+            PRIMARY KEY  (`id`),
+            KEY `chat_id` (`chat_id`),
+            KEY `user_id` (`user_id`),
+            KEY `added` (`added`)
         ) ENGINE=" . $storage_engine . " DEFAULT CHARACTER SET " . $collate . " COLLATE " . $collate . "_general_ci";
 
         $tableSchema[] = "DROP TABLE IF EXISTS users_have_access";
@@ -289,8 +317,8 @@ class Installer {
         $pass_adm = md5($this->post['passwd'] . $config['hash']);
         $time = time();
 
-        $tableSchema[] = "INSERT INTO users (id, login, password, name, second_name, reg_date, status) values (1, '{$this->post['adm']}', '$pass_adm', '', '', '$time', 1)";
-        $tableSchema[] = "INSERT INTO users_have_access (user_id, access_id) values (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8)";
+        $tableSchema[] = "INSERT INTO users (id, login, password, name, second_name, reg_date, status) VALUES (1, '{$this->post['adm']}', '$pass_adm', '', '', '$time', 1)";
+        $tableSchema[] = "INSERT INTO users_have_access (user_id, access_id) VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8)";
 
         $limit = count($tableSchema);
         $inserted = 0;

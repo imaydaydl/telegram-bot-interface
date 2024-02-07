@@ -1,6 +1,8 @@
 <?php
 require_once CLASS_DIR . 'session.class.php';
+include_once ROOT_DIR . '/vendor/autoload.php';
 
+use Telegram\Bot\Api;
 class User {
     protected $session;
     protected $config;
@@ -73,6 +75,30 @@ class User {
             return ['error' => 'Цей логін заблоковано'];
         }
 
+        $time = time();
+        $this->db->query("INSERT INTO users_login (user_id, added) VALUES ('{$user['id']}', '{$time}')");
+        $login_id = $this->db->insertId();
+
+        if($user && $user['two_step'] == 1) {
+            $this->db->query("UPDATE users_login SET is_two_factory = 1, chat_id = '{$user['two_step_chat_id']}' WHERE id = '{$login_id}'");
+            $telegram = new Api($this->config['bot_token']);
+            $resp = array();
+            $resp['parse_mode'] = 'MarkdownV2';
+            $resp['chat_id'] = $user['two_step_chat_id'];
+            $resp['text'] = "Ви підтверджуєте вхід в систему\\?";
+            $inline = array();
+            $but = array();
+            $but['text'] = "✅ Принимаю";
+            $but['callback_data'] = "/confirm_login";
+            $inline[] = $but;
+            $inline = array_chunk($inline, 2);
+            $reply_markup['inline_keyboard'] = $inline;
+            $resp['reply_markup'] = json_encode($reply_markup);
+            $telegram->sendMessage($resp);
+
+            return ['status' => 'two_step', 'chat_id' => $user['two_step_chat_id']];
+        }
+
         $user_data = [
             "login" => $user['login'],
             "password" => $user['password'],
@@ -82,7 +108,34 @@ class User {
 
         $this->session->setUserdata($user_data);
 
+        $this->db->query("UPDATE users_login SET status = 1 WHERE id = '{$login_id}'");
+
         return ['success' => 'Успішний вхід в акаунт'];
+    }
+
+    public function createUserSessionTwoStep($chat_id) {
+        try {
+            $datefrom = strtotime(date('Y-m-d') . ' 00:00:00');
+            $dateto = strtotime(date('Y-m-d') . ' 23:59:59');
+
+            $getLogin = $this->db->superQuery("SELECT id, status FROM users_login WHERE chat_id = '{$chat_id}' AND added >= '{$datefrom}' AND added <= '{$dateto}' ORDER BY added DESC LIMIT 1") ?? null;
+            if($getLogin != null && $getLogin['status'] == 1) {
+                $user = $this->db->superQuery("SELECT * FROM users WHERE two_step_chat_id = '{$chat_id}'");
+
+                $user_data = [
+                    "login" => $user['login'],
+                    "password" => $user['password'],
+                    "user_id" => $user['id'],
+                    "date" => date('Y-m-d')
+                ];
+
+                $this->session->setUserdata($user_data);
+
+                return ['success' => 'Успішний вхід в акаунт'];
+            }
+        } catch(Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
     }
 
     public function clearSession() {

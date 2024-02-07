@@ -19,6 +19,14 @@
             <td>Чат-заглушка (Для тестів. Необхідний на випадок, якщо не вказувати кому відправляти повідомлення)</td>
             <td><input type="text" id="chat_id" value="{chat_id}"></td>
         </tr>
+        <tr>
+            <td>Двухфакторна авторизація</td>
+            <td>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="twoFactory" {two_factory}>
+                </div>
+            </td>
+        </tr>
         <tr><td colspan="2" class="text_right"><button class="btn btn-info connect_webhooks">Підключити вебхуки до бота</button><button class="btn btn-primary saveSettings">Зберегти</button></td></tr>
     </tbody>
 </table>

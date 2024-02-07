@@ -6,10 +6,10 @@
     [settings]<div id="settings">Налаштування</div>[/settings]
 </div>
 <div class="content_middle_settup">
-    <div id="send_message_block" class="active_block">
+    [send_message]<div id="send_message_block" class="active_block">
         {tg_sends}
-    </div>
-    <div id="history_block">
+    </div>[/send_message]
+    [history]<div id="history_block">
         <table class="history">
             <thead>
                 <tr>
@@ -24,8 +24,8 @@
                 {history_tab}
             </tbody>
         </table>
-    </div>
-    <div id="log_block">
+    </div>[/history]
+    [log]<div id="log_block">
         <table class="history">
             <thead>
                 <tr>
@@ -39,8 +39,8 @@
                 {log_tab}
             </tbody>
         </table>
-    </div>
-    <div id="user_list_block">
+    </div>[/log]
+    [user_list]<div id="user_list_block">
         [add_users]<div class="text_right margin-b"><button class="btn btn-primary addUser">Додати користувача</button></div>[/add_users]
         <table class="history">
             <thead>
@@ -57,8 +57,8 @@
                 {users_tab}
             </tbody>
         </table>
-    </div>
-    <div id="settings_block">
+    </div>[/user_list]
+    [settings]<div id="settings_block">
         {setting_block}
-    </div>
+    </div>[/settings]
 </div>

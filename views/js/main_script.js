@@ -505,8 +505,14 @@ $(document).ready(function(){
             + '<div><input type="text" id="edit_second" placeholder="Прізвище" value="' + second + '"></div>'
             + '<div><input type="text" id="edit_login" placeholder="Логін" value="' + login + '"></div>'
             + '<div><input type="password" id="old_pass" placeholder="Старий пароль"></div>'
-            + '<div><input type="password" id="edit_pass" placeholder="Пароль"></div>'
+            + '<div><input type="password" id="edit_pass" placeholder="Новий пароль"></div>'
             + '<div><input type="password" id="edit_repeat_pass" placeholder="Повторіть пароль"></div>'
+            + '<div><div class="input-group input-group-sm mb-3">'
+                + '<span class="input-group-text">Двухфакторна авторизація</span>'
+                + '<div class="input-group-text form-check form-switch">'
+                    + '<input class="form-check-input" type="checkbox" role="switch" id="userTwoFactory">'
+                + '</div>'
+            + '</div></div>'
             + '<div class="text_center"><button class="btn btn-primary saveProfile" data-id="' + user_id + '">Зберегти</button></div>'
             + '</div>'
         );
@@ -726,6 +732,29 @@ $(document).ready(function(){
 
         }
     });
+    $('body').on('change', '#userTwoFactory', function() {
+        if($(this).is(':checked')) {
+            $(this).closest('div.user_edit').find('div.text_center').before('<div><input type="text" id="two_factory_code" placeholder="КОД"></div>');
+
+            iziToast.info({
+                title: 'Увага!',
+                message: "Напишіть закріпленому в налаштуваннях боту команду /authorize. Бот напише код, який необхідно ввести в поле \"КОД\" і після натиснути кнопку \"Зберегти\".",
+                close: true,
+                position: 'topRight',
+                timeout: false,
+                buttons: [
+                    ['<button fdprocessedid="5si1ub">Закрити</button>', function (instance, toast) {
+                        instance.hide({
+                            transitionOut: 'fadeOutUp'
+                        }, toast, 'buttonName');
+                    }]
+                ],
+                zindex: 9999999999999
+            });
+        } else {
+            $(this).closest('div.user_edit').find('#two_factory_code').closest('div').remove();
+        }
+    });
     $('.saveBotMenu').on('click', function() {
         let json = {};
         let menu = [];
@@ -854,6 +883,7 @@ $(document).ready(function(){
         json.bot_token = $('#tg_token').val();
         json.bot_url = $('#tg_url').val();
         json.chat_id = $('#chat_id').val();
+        json.two_factory = $('#twoFactory').is(':checked') ? 1 : 0;
 
         $.ajax({
             type: 'POST',
@@ -897,6 +927,26 @@ function login() {
             success: function(response) {
                 if(response.status == 'error') {
                     toast('error', 'Помилка!', 'Сталась помилка під час авторизації. ' + response.message);
+                } else if(response.status == 'two_step') {
+                    toast('warning', 'Увага!', response.message);
+                    setInterval(function() {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/login/check_two_step',
+                            data: {chat_id: response.chat_id},
+                            dataType: 'json',
+                            success: function(response) {
+                                if(response.status == 'error') {
+                                    toast('error', 'Помилка!', 'Сталась помилка під час авторизації. ' + response.message);
+                                } else {
+                                    toast('success', 'Успішно!', 'Авторизація успішна.');
+                                    setTimeout(function() {
+                                        window.location = '/';
+                                    }, 3000);
+                                }
+                            }
+                        });
+                    }, 3000);
                 } else {
                     toast('success', 'Успішно!', 'Авторизація успішна.');
                     setTimeout(function() {

@@ -87,6 +87,9 @@ class UserMod {
             case 'logout':
                 $this->clearSession();
                 break;
+            case 'check_two_step':
+                $this->checkTwoStep();
+                break;
         }
     }
 
@@ -108,6 +111,8 @@ class UserMod {
 
         if(isset($createSession['error'])) {
             echo json_encode(['status' => 'error', 'message' => $createSession['error']]);
+        } elseif(isset($createSession['status']) && $createSession['status'] == 'two_step') {
+            echo json_encode(['status' => 'two_step', 'message' => 'У Вас увімкнено двухфакторну авторизацію. Підтвердіть вхід через телеграм бот', 'chat_id' => $createSession['chat_id']]);
         } else {
             echo json_encode(['status' => 'success', 'message' => $createSession['success']]);
         }
@@ -266,6 +271,16 @@ class UserMod {
         $this->view->title = 'Профіль';
 
         $this->view->render('index.html');
+    }
+
+    private function checkTwoStep() {
+        $createSession = $this->user->createUserSessionTwoStep($this->post['chat_id']);
+
+        if(isset($createSession['error'])) {
+            echo json_encode(['status' => 'error', 'message' => $createSession['error']]);
+        } else {
+            echo json_encode(['status' => 'success', 'message' => $createSession['success']]);
+        }
     }
 
     private function saveProfile() {
