@@ -59,7 +59,7 @@ class TelegramWebhook {
                 default:
                     $check = true;
                     if($chat_id && $text && $name) {
-                        $check = $this->db->superQuery("SELECT added FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
+                        $check = $this->db->superQuery("SELECT added FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}' ORDER BY id DESC LIMIT 1") ?? false;
                     }
 
                     if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
