@@ -104,6 +104,10 @@ class TelegramWebhook {
                                     $reply_markup['inline_keyboard'] = $inline;
                                 }
 
+                                $con_file = fopen(ROOT_DIR . '/test2.php', "w+");
+                                fwrite($con_file, json_encode($reply_markup['inline_keyboard']));
+                                fclose($con_file);
+
                                 $con_file = fopen(ROOT_DIR . '/test.php', "w+");
                                 fwrite($con_file, json_encode($d));
                                 fclose($con_file);
