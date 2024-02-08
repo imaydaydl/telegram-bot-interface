@@ -118,7 +118,7 @@ class TelegramWebhook {
                                     $resp['reply_markup'] = $this->telegram->replyKeyboardMarkup($reply_markup);
 
                                     $con_file = fopen(ROOT_DIR . '/test2.php', "w+");
-                                    fwrite($con_file, $reply_markup['reply_markup']);
+                                    fwrite($con_file, $resp['reply_markup']);
                                     fclose($con_file);
                                 }
 
