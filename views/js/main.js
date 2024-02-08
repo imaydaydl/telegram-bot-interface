@@ -760,6 +760,7 @@ $(document).ready(function(){
     $('.saveBotMenu').on('click', function() {
         let json = {};
         let menu = [];
+        let stop = false;
         $('body .bots_settings').each(function() {
             let keyButton = $(this).find('select.buttons_selector').val();
             if(keyButton == '') {
@@ -782,6 +783,11 @@ $(document).ready(function(){
                     }
                 });
 
+                if(globalButtons.length > 0 && innerButtons.length > 0) {
+                    stop = true;
+                    toast('warning', 'Увага!', 'Одна кнопка меню може мати або глобальне меню, або меню під текстом.');
+                }
+
                 let oneMenu = {};
                 oneMenu['key'] = keyButton;
                 oneMenu['required'] = keyRequired;
@@ -792,7 +798,7 @@ $(document).ready(function(){
             }
         });
 
-        if(menu.length > 0) {
+        if(menu.length > 0 && !stop) {
             for(const i in menu) {
                 json[i] = menu[i];
             }
