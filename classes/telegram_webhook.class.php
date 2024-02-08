@@ -78,7 +78,7 @@ class TelegramWebhook {
                             if($d['key'] == $text && isset($check['added'])) {
                                 if($d['required'] > 0) {
                                     $days = $d['required'] == 1 ? 'day' : 'days';
-                                    
+
                                     if($check['added'] >= strtotime("+{$d['required']} {$days}")) {
                                         $check = true;
                                     }
@@ -86,6 +86,10 @@ class TelegramWebhook {
                             }
                         }
                     }
+
+                    $con_file = fopen(ROOT_DIR . '/test.php', "w+");
+                    fwrite($con_file, $check);
+                    fclose($con_file);
 
                     if(!$check || !isset($check['id'])) {
                         if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
