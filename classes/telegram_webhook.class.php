@@ -92,7 +92,7 @@ class TelegramWebhook {
                     }
 
                     $con_file = fopen(ROOT_DIR . '/test.php', "w+");
-                    fwrite($con_file, "{$scheck}: {$check}");
+                    fwrite($con_file, "{$scheck}: " . json_encode($check));
                     fclose($con_file);
 
                     if(!$check || !isset($check['id'])) {
