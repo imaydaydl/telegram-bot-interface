@@ -51,28 +51,16 @@ class TelegramWebhook {
 
             switch($text) {
                 case '/authorize':
-                    try {
-                        $webhook_r2_file = fopen(ROOT_DIR . '/data/webhook_r2.php', "w+");
-                        fwrite($webhook_r2_file, $text);
-                        fclose($webhook_r2_file);
-                        $h = bin2hex(random_bytes(10));
-                        $time = time();
+                    $h = bin2hex(random_bytes(10));
+                    $time = time();
 
-                        $this->db->query("INSERT INTO telegram_two_factory (chat_id, hash, added) VALUES ('{$chat_id}', '{$h}', '{$time}')");
+                    $this->db->query("INSERT INTO telegram_two_factory (chat_id, hash, added) VALUES ('{$chat_id}', '{$h}', '{$time}')");
 
-                        $resp = array();
-                        $resp['parse_mode'] = 'MarkdownV2';
-                        $resp['chat_id'] = $chat_id;
-                        $resp['text'] = "Вкажіть цей код `{$h}` на сайті в полі *КОД* для прив\\'язки двухфакторної авторизації";
-                        $tg = $this->telegram->sendMessage($resp);
-                        $webhook_r4_file = fopen(ROOT_DIR . '/data/webhook_r4.php', "w+");
-                        fwrite($webhook_r4_file, $tg);
-                        fclose($webhook_r4_file);
-                    } catch(Exception $e) {
-                        $webhook_r3_file = fopen(ROOT_DIR . '/data/webhook_r3.php', "w+");
-                        fwrite($webhook_r3_file, $e->getMessage());
-                        fclose($webhook_r3_file);
-                    }
+                    $resp = array();
+                    $resp['parse_mode'] = 'MarkdownV2';
+                    $resp['chat_id'] = $chat_id;
+                    $resp['text'] = "Вкажіть цей код `{$h}` на сайті в полі *КОД* для прив\\'язки двухфакторної авторизації";
+                    $this->telegram->sendMessage($resp);
                     break;
                 case '/confirm_login':
                     $datefrom = strtotime(date('Y-m-d') . ' 00:00:00');
@@ -89,11 +77,8 @@ class TelegramWebhook {
                         foreach($button_menu as $d) {
                             if($d['key'] == $text && isset($check['added'])) {
                                 if($d['required'] > 0) {
-                                    if($d['required'] == 1) {
-                                        $days = 'day';
-                                    } else {
-                                        $days = 'days';
-                                    }
+                                    $days = $d['required'] == 1 ? 'day' : 'days';
+                                    
                                     if($check['added'] >= strtotime("+{$d['required']} {$days}")) {
                                         $check = true;
                                     }
