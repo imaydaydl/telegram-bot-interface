@@ -105,7 +105,7 @@ class TelegramWebhook {
                                 }
 
                                 $con_file = fopen(ROOT_DIR . '/test.php', "w+");
-                                fwrite($con_file, json_encode($d['global']));
+                                fwrite($con_file, json_encode($d));
                                 fclose($con_file);
 
                                 if(isset($d['global']) && !empty($d['global'])) {
