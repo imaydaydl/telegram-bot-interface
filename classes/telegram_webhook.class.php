@@ -45,8 +45,11 @@ class TelegramWebhook {
 
             if($chat_id && $text && $name) {
                 $check = $this->db->superQuery("SELECT id, added FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
+
+                $scheck = !$check ? '1' : '2';
             } else {
                 $check = true;
+                $scheck = '3';
             }
 
             switch($text) {
@@ -81,6 +84,7 @@ class TelegramWebhook {
 
                                     if($check['added'] >= strtotime("+{$d['required']} {$days}")) {
                                         $check = true;
+                                        $scheck = '4';
                                     }
                                 }
                             }
@@ -88,7 +92,7 @@ class TelegramWebhook {
                     }
 
                     $con_file = fopen(ROOT_DIR . '/test.php', "w+");
-                    fwrite($con_file, $check);
+                    fwrite($con_file, $scheck);
                     fclose($con_file);
 
                     if(!$check || !isset($check['id'])) {
