@@ -109,7 +109,7 @@ class TelegramWebhook {
                                 fclose($con_file);
 
                                 if(isset($d['global']) && !empty($d['global'])) {
-                                    $reply_markup['keyboard'] = $d['global'];
+                                    $reply_markup['keyboard'] = [$d['global']];
                                     $reply_markup['resize_keyboard'] = true;
                                     $reply_markup['one_time_keyboard'] = false;
                                 }
