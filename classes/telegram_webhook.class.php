@@ -88,6 +88,12 @@ class TelegramWebhook {
                                 $resp['text'] = str_replace($str1, $str2, $d['text']);
 
                                 $reply_markup = array();
+                                if(isset($d['global']) && !empty($d['global'])) {
+                                    $reply_markup['keyboard'] = [$d['global']];
+                                    $reply_markup['resize_keyboard'] = true;
+                                    $reply_markup['one_time_keyboard'] = false;
+                                }
+                                
                                 if(isset($d['inner']) && !empty($d['inner'])) {
                                     $inline = array();
                                     foreach($d['inner'] as $inner) {
@@ -102,12 +108,6 @@ class TelegramWebhook {
                                     }
                                     $inline = array_chunk($inline, 2);
                                     $reply_markup['inline_keyboard'] = $inline;
-                                }
-
-                                if(isset($d['global']) && !empty($d['global'])) {
-                                    $reply_markup['keyboard'] = [$d['global']];
-                                    $reply_markup['resize_keyboard'] = true;
-                                    $reply_markup['one_time_keyboard'] = false;
                                 }
 
                                 if(!empty($reply_markup)) {
