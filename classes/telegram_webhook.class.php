@@ -26,10 +26,6 @@ class TelegramWebhook {
         try {
             $result = $this->telegram->getWebhookUpdates();
 
-            $webhook_file = fopen(ROOT_DIR . '/data/webhook.php', "w+");
-            fwrite($webhook_file, $result);
-            fclose($webhook_file);
-
             $text = isset($result["callback_query"]) ? $result['callback_query']['data'] : $result["message"]["text"];
             $chat_id = isset($result["callback_query"]) ? $result['callback_query']["message"]['chat']['id'] : $result["message"]["chat"]["id"];
             $name = isset($result["callback_query"]) ? $result['callback_query']['from']['username'] : $result["message"]["from"]["username"];
@@ -38,16 +34,6 @@ class TelegramWebhook {
             $get_user = $this->getUser($chat_id);
             $old_id = $get_user['chat_id'];
             $username = $first_name . ' ' . $last_name;
-
-            $webhook_r_file = fopen(ROOT_DIR . '/data/webhook_r.php', "w+");
-            fwrite($webhook_r_file, $text);
-            fclose($webhook_r_file);
-
-            if($chat_id && $text && $name) {
-                $check = $this->db->superQuery("SELECT id, added FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
-            } else {
-                $check = true;
-            }
 
             switch($text) {
                 case '/authorize':
@@ -71,78 +57,72 @@ class TelegramWebhook {
                     }
                     break;
                 default:
-                    $check_date = false;
+                    $check = true;
+                    if($chat_id && $text && $name) {
+                        $check = $this->db->superQuery("SELECT added FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
+                    }
+
                     if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
                         $data = file_get_contents(ROOT_DIR . '/data/bot_menu.php');
                         $button_menu = unserialize($data);
                         foreach($button_menu as $d) {
-                            if($d['key'] == $text && isset($check['added'])) {
-                                if($d['required'] > 0) {
+                            if($d['key'] == $text) {
+                                if(isset($check['added']) && $d['required'] > 0) {
                                     $days = $d['required'] == 1 ? 'day' : 'days';
 
                                     if($check['added'] >= strtotime("+{$d['required']} {$days}")) {
-                                        $check_date = true;
+                                        $reply = "⚠️ *Помилка\\!*
+🪬 Ваша заявка ще не прийнята\\. Завершіть процес подачи або дочекайтесь підтвердження\\)";
+                                        $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'parse_mode' => 'MarkdownV2']);
+
+                                        continue;
                                     }
                                 }
-                            }
-                        }
-                    }
 
-                    if(!$check || !isset($check['id']) || !$check_date) {
-                        $con_file = fopen(ROOT_DIR . '/test.php', "w+");
-                        fwrite($con_file, ".2: " . json_encode($check));
-                        fclose($con_file);
-                        if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
-                            foreach($button_menu as $d) {
-                                if($d['key'] == $text) {
-                                    $resp = array();
-                                    $resp['chat_id'] = $chat_id;
+                                $resp = array();
+                                $resp['chat_id'] = $chat_id;
 
-                                    $str1 = array(".", "[", "]", "(", ")", "!", "|");
-                                    $str2 = array('\\.', '\\[', '\\]', '\\(', '\\)', '\\!', '\\|');
+                                $str1 = array(".", "[", "]", "(", ")", "!", "|");
+                                $str2 = array('\\.', '\\[', '\\]', '\\(', '\\)', '\\!', '\\|');
 
-                                    $resp['text'] = str_replace($str1, $str2, $d['text']);
+                                $resp['text'] = str_replace($str1, $str2, $d['text']);
 
-                                    $reply_markup = array();
-                                    if(isset($d['inner']) && !empty($d['inner'])) {
-                                        $inline = array();
-                                        foreach($d['inner'] as $inner) {
-                                            $but = array();
-                                            $but['text'] = $inner['name'];
-                                            if(strpos($inner['action'], "http://") !== false || strpos($inner['action'], "https://") !== false) {
-                                                $but['url'] = $inner['action'];
-                                            } else {
-                                                $but['callback_data'] = $inner['action'];
-                                            }
-                                            $inline[] = $but;
+                                $reply_markup = array();
+                                if(isset($d['inner']) && !empty($d['inner'])) {
+                                    $inline = array();
+                                    foreach($d['inner'] as $inner) {
+                                        $but = array();
+                                        $but['text'] = $inner['name'];
+                                        if(strpos($inner['action'], "http://") !== false || strpos($inner['action'], "https://") !== false) {
+                                            $but['url'] = $inner['action'];
+                                        } else {
+                                            $but['callback_data'] = $inner['action'];
                                         }
-                                        $inline = array_chunk($inline, 2);
-                                        $reply_markup['inline_keyboard'] = $inline;
+                                        $inline[] = $but;
                                     }
-
-                                    if(isset($d['global']) && !empty($d['global'])) {
-                                        $reply_markup['keyboard'] = $d['global'];
-                                        $reply_markup['resize_keyboard'] = true;
-                                        $reply_markup['one_time_keyboard'] = false;
-                                    }
-
-                                    if(!empty($reply_markup)) {
-                                        $resp['reply_markup'] = $this->telegram->replyKeyboardMarkup($reply_markup);
-                                    }
-
-                                    $resp['parse_mode'] = 'MarkdownV2';
-
-                                    $this->telegram->sendMessage($resp);
+                                    $inline = array_chunk($inline, 2);
+                                    $reply_markup['inline_keyboard'] = $inline;
                                 }
+
+                                if(isset($d['global']) && !empty($d['global'])) {
+                                    $reply_markup['keyboard'] = $d['global'];
+                                    $reply_markup['resize_keyboard'] = true;
+                                    $reply_markup['one_time_keyboard'] = false;
+                                }
+
+                                if(!empty($reply_markup)) {
+                                    $resp['reply_markup'] = $this->telegram->replyKeyboardMarkup($reply_markup);
+                                }
+
+                                $resp['parse_mode'] = 'MarkdownV2';
+
+                                $this->telegram->sendMessage($resp);
                             }
                         }
-
-                        return ['status' => 'success', 'username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text];
-                    } else {
-                        $reply = "⚠️ *Ошибка\\!*
-🪬 Ваша заявка еще не принята\\. Завершите процес подачи или дождитесь подтверждения\\)";
-                        $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'parse_mode' => 'MarkdownV2']);
                     }
+
+                    return ['status' => 'success', 'username' => $username, 'chat_id' => $chat_id, 'name' => $name, 'old_id' => $old_id, 'text' => $text];
+
                     break;
             }
         } catch(Exception $e) {
