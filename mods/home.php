@@ -277,8 +277,8 @@ class Home {
             $buttons = array();
             $buttons[] = '';
             $button_menu = array();
-            if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
-                $data = file_get_contents(ROOT_DIR . '/data/bot_menu.php');
+            if(file_exists(ROOT_DIR . '/data/botMenu.php')) {
+                $data = file_get_contents(ROOT_DIR . '/data/botMenu.php');
                 $button_menu = unserialize($data);
                 foreach($button_menu as $d) {
                     if(!in_array($d['key'], $buttons)) $buttons[] = $d['key'];
@@ -386,8 +386,8 @@ class Home {
 
     private function createMenu() {
         try {
-            file_put_contents(ROOT_DIR . '/data/bot_menu.php', serialize($this->post));
-            @chmod(ROOT_DIR . '/data/bot_menu.php', 0666);
+            file_put_contents(ROOT_DIR . '/data/botMenu.php', serialize($this->post));
+            @chmod(ROOT_DIR . '/data/botMenu.php', 0666);
 
             echo json_encode(['status' => 'success']);
         } catch(Exception $e) {

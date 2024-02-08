@@ -62,8 +62,8 @@ class TelegramWebhook {
                         $check = $this->db->superQuery("SELECT added FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}' ORDER BY id DESC LIMIT 1") ?? false;
                     }
 
-                    if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
-                        $data = file_get_contents(ROOT_DIR . '/data/bot_menu.php');
+                    if(file_exists(ROOT_DIR . '/data/botMenu.php')) {
+                        $data = file_get_contents(ROOT_DIR . '/data/botMenu.php');
                         $button_menu = unserialize($data);
                         foreach($button_menu as $d) {
                             if($d['key'] == $text) {
