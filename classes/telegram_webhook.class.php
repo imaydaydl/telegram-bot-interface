@@ -91,11 +91,10 @@ class TelegramWebhook {
                         }
                     }
 
-                    $con_file = fopen(ROOT_DIR . '/test.php', "w+");
-                    fwrite($con_file, "{$scheck}: " . json_encode($check));
-                    fclose($con_file);
-
                     if(!$check || !isset($check['id'])) {
+                        $con_file = fopen(ROOT_DIR . '/test.php', "w+");
+                        fwrite($con_file, "{$scheck}.2: " . json_encode($check));
+                        fclose($con_file);
                         if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
                             foreach($button_menu as $d) {
                                 if($d['key'] == $text) {
