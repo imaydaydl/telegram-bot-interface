@@ -45,11 +45,8 @@ class TelegramWebhook {
 
             if($chat_id && $text && $name) {
                 $check = $this->db->superQuery("SELECT id, added FROM telegram_log WHERE (chat_id = '{$chat_id}' OR name = '{$name}') AND action = '{$text}'") ?? false;
-
-                $scheck = !$check ? '1' : '2';
             } else {
                 $check = true;
-                $scheck = '3';
             }
 
             switch($text) {
@@ -74,6 +71,7 @@ class TelegramWebhook {
                     }
                     break;
                 default:
+                    $check_date = false;
                     if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
                         $data = file_get_contents(ROOT_DIR . '/data/bot_menu.php');
                         $button_menu = unserialize($data);
@@ -83,17 +81,16 @@ class TelegramWebhook {
                                     $days = $d['required'] == 1 ? 'day' : 'days';
 
                                     if($check['added'] >= strtotime("+{$d['required']} {$days}")) {
-                                        $check = true;
-                                        $scheck = '4';
+                                        $check_date = true;
                                     }
                                 }
                             }
                         }
                     }
 
-                    if(!$check || !isset($check['id'])) {
+                    if(!$check || !isset($check['id']) || !$check_date) {
                         $con_file = fopen(ROOT_DIR . '/test.php', "w+");
-                        fwrite($con_file, "{$scheck}.2: " . json_encode($check));
+                        fwrite($con_file, ".2: " . json_encode($check));
                         fclose($con_file);
                         if(file_exists(ROOT_DIR . '/data/bot_menu.php')) {
                             foreach($button_menu as $d) {
