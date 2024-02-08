@@ -763,7 +763,7 @@ $(document).ready(function(){
         $('body .bots_settings').each(function() {
             let keyButton = $(this).find('select.buttons_selector').val();
             if(keyButton == '') {
-                toast('warning', 'Увага!', 'В селекторі не обрано кнопку, якої прив\'язується текст')
+                toast('warning', 'Увага!', 'В селекторі не обрано кнопку, до якої прив\'язується текст')
             } else {
                 let keyRequired = $(this).find('.count_days').val() ?? 0;
                 let globalButtons = [];
