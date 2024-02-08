@@ -70,7 +70,7 @@ class TelegramWebhook {
                                 if(isset($check['added']) && $d['required'] > 0) {
                                     $days = $d['required'] == 1 ? 'day' : 'days';
 
-                                    if($check['added'] >= strtotime("+{$d['required']} {$days}")) {
+                                    if(strtotime("+{$d['required']} {$days}", $check['added']) <= $d['required']) {
                                         $reply = "⚠️ *Помилка\\!*
 🪬 Ваша заявка ще не прийнята\\. Завершіть процес подачи або дочекайтесь підтвердження\\)";
                                         $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'parse_mode' => 'MarkdownV2']);
