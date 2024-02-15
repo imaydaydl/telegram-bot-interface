@@ -86,7 +86,21 @@ table.history input, table.history textarea {
     width: 100%;
     padding: 15px;
 }
-.content_header_right {
+.content_footer {
+    width: 100%;
+    padding: 15px;
+    display: table;
+    border-top: 1px solid #fff;
+}
+.dark_theme .content_footer {
+    border-top: 1px solid #262d3c;
+}
+.content_left {
+    display: table-cell;
+    text-align: left;
+    width: 50%;
+}
+.content_right {
     display: table-cell;
     text-align: right;
     width: 50%;

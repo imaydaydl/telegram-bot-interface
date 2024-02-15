@@ -102,6 +102,7 @@ class UserMod {
         $this->view->content = $view2->result['login'];
         $this->view->user_name = 'Користувач';
         $this->view->title = 'Авторизація';
+        $this->view->year = date('Y') == '2024' ? date('Y') : '2024 - ' . date('Y');
 
         $this->view->render('index.html');
     }
@@ -269,6 +270,7 @@ class UserMod {
         $this->view->content = $view2->result['profile'];
         $this->view->user_name = $this->currentUser['login'];
         $this->view->title = 'Профіль';
+        $this->view->year = date('Y') == '2024' ? date('Y') : '2024 - ' . date('Y');
 
         $this->view->render('index.html');
     }

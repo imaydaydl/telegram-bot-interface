@@ -110,6 +110,7 @@ class Installer {
         $this->view->content = $view2->result['install'];
         $this->view->user_name = 'Користувач';
         $this->view->title = 'Встановлення проекта';
+        $this->view->year = date('Y') == '2024' ? date('Y') : '2024 - ' . date('Y');
 
         $this->view->render('index.html');
     }

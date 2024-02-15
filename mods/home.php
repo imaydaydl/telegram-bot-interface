@@ -94,6 +94,7 @@ class Home {
 
         $this->view->content = $view2->result['main'];
         $this->view->user_name = $this->user['login'];
+        $this->view->year = date('Y') == '2024' ? date('Y') : '2024 - ' . date('Y');
 
         $this->view->render('index.html');
     }
@@ -144,6 +145,7 @@ class Home {
 
         $this->view->content = $view2->result['main'];
         $this->view->user_name = $this->user['login'];
+        $this->view->year = date('Y') == '2024' ? date('Y') : '2024 - ' . date('Y');
 
         $this->view->render('index.html');
     }
@@ -190,6 +192,7 @@ class Home {
 
         $this->view->content = $view2->result['main'];
         $this->view->user_name = $this->user['login'];
+        $this->view->year = date('Y') == '2024' ? date('Y') : '2024 - ' . date('Y');
 
         $this->view->render('index.html');
     }
@@ -261,6 +264,7 @@ class Home {
 
         $this->view->content = $view2->result['main'];
         $this->view->user_name = $this->user['login'];
+        $this->view->year = date('Y') == '2024' ? date('Y') : '2024 - ' . date('Y');
 
         $this->view->render('index.html');
     }
@@ -380,6 +384,7 @@ class Home {
 
         $this->view->content = $view2->result['main'];
         $this->view->user_name = $this->user['login'];
+        $this->view->year = date('Y') == '2024' ? date('Y') : '2024 - ' . date('Y');
 
         $this->view->render('index.html');
     }

@@ -499,30 +499,34 @@ $(document).ready(function(){
         let name = $('.profile_info div:nth-child(2) span:nth-child(2)').html();
         let second = $('.profile_info div:nth-child(3) span:nth-child(2)').html();
         let login = $('.profile_info div:nth-child(4) span:nth-child(2)').html();
-
-        $('.content_middle_settup').append('<div class="user_edit">'
-            + '<div><input type="text" id="edit_name" placeholder="Ім\'я" value="' + name + '"></div>'
-            + '<div><input type="text" id="edit_second" placeholder="Прізвище" value="' + second + '"></div>'
-            + '<div><input type="text" id="edit_login" placeholder="Логін" value="' + login + '"></div>'
-            + '<div><input type="password" id="old_pass" placeholder="Старий пароль"></div>'
-            + '<div><input type="password" id="edit_pass" placeholder="Новий пароль"></div>'
-            + '<div><input type="password" id="edit_repeat_pass" placeholder="Повторіть пароль"></div>'
-            + '<div><div class="input-group input-group-sm mb-3">'
-                + '<span class="input-group-text">Двухфакторна авторизація</span>'
-                + '<div class="input-group-text form-check form-switch">'
-                    + '<input class="form-check-input" type="checkbox" role="switch" id="userTwoFactory">'
+        console.log($('body').find('.user_edit'));
+        if($('body').find('.user_edit').length == 0) {
+            $('.content_middle_settup').append('<div class="user_edit">'
+                + '<div><input type="text" id="edit_name" placeholder="Ім\'я" value="' + name + '"></div>'
+                + '<div><input type="text" id="edit_second" placeholder="Прізвище" value="' + second + '"></div>'
+                + '<div><input type="text" id="edit_login" placeholder="Логін" value="' + login + '"></div>'
+                + '<div><input type="password" id="old_pass" placeholder="Старий пароль"></div>'
+                + '<div><input type="password" id="edit_pass" placeholder="Новий пароль"></div>'
+                + '<div><input type="password" id="edit_repeat_pass" placeholder="Повторіть пароль"></div>'
+                + '<div><div class="input-group input-group-sm mb-3">'
+                    + '<span class="input-group-text">Двухфакторна авторизація</span>'
+                    + '<div class="input-group-text form-check form-switch">'
+                        + '<input class="form-check-input" type="checkbox" role="switch" id="userTwoFactory">'
+                    + '</div>'
+                + '</div></div>'
+                + '<div class="text_center"><button class="btn btn-primary saveProfile" data-id="' + user_id + '">Зберегти</button></div>'
                 + '</div>'
-            + '</div></div>'
-            + '<div class="text_center"><button class="btn btn-primary saveProfile" data-id="' + user_id + '">Зберегти</button></div>'
-            + '</div>'
-        );
+            );
 
-        var wbl = $(window).width()-40;
-		if( $('.user_edit').width() > wbl ) {
-			$('.user_edit').height(wbl/($('.user_edit').width()/$('.user_edit').height())).width(wbl).css({'margin-left': 0-wbl/2});
-		}
-		
-		$('.user_edit').animate({width: '100%', 'padding-top': '20px'}, 'slow', function() {});
+            var wbl = $(window).width()-40;
+            if( $('.user_edit').width() > wbl ) {
+                $('.user_edit').height(wbl/($('.user_edit').width()/$('.user_edit').height())).width(wbl).css({'margin-left': 0-wbl/2});
+            }
+            
+            $('.user_edit').animate({width: '100%', 'padding-top': '20px'}, 'slow', function() {});
+        } else {
+            $('body').find('.user_edit').hide('slow', function() { $('body').find('.user_edit').remove(); });
+        }
     });
 
     $('body').on('click', '.saveProfile', function() {
